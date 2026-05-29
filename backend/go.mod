@@ -1,9 +1,9 @@
-module github.com/DouDOU-start/airgate-playground/backend
+module github.com/DevilGenius/airgate-playground/backend
 
 go 1.25.7
 
 require (
-	github.com/DouDOU-start/airgate-sdk v0.2.1
+	github.com/DevilGenius/airgate-sdk v0.2.1
 	github.com/lib/pq v1.10.9
 	google.golang.org/grpc v1.79.2
 )

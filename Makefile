@@ -24,7 +24,7 @@ build-backend: webdist ## 构建后端
 
 release: webdist ## 构建 Linux 发布产物
 	mkdir -p bin
-	cd backend && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build -buildvcs=false -trimpath -ldflags "-X 'github.com/DouDOU-start/airgate-playground/backend/internal/playground.PluginVersion=$${VERSION:-dev}'" -o ../bin/airgate-playground-linux-amd64 .
+	cd backend && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build -buildvcs=false -trimpath -ldflags "-X 'github.com/DevilGenius/airgate-playground/backend/internal/playground.PluginVersion=$${VERSION:-dev}'" -o ../bin/airgate-playground-linux-amd64 .
 
 ci: webdist lint test vet build-backend ## 本地运行与 CI 一致的检查
 

@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { cssVar } from '@doudou-start/airgate-theme';
+import { cssVar } from '@devilgenius/airgate-theme';
 
 const PLAYGROUND_COMPOSER_TEXTAREA_HEIGHT = 112;
 

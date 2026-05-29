@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	sdk "github.com/DouDOU-start/airgate-sdk/sdkgo"
+	sdk "github.com/DevilGenius/airgate-sdk/sdkgo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

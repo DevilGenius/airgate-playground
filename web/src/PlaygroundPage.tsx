@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { cssVar } from '@doudou-start/airgate-theme';
+import { cssVar } from '@devilgenius/airgate-theme';
 import { PlaygroundProvider, usePlayground } from './playground/PlaygroundContext';
 import { ChatView } from './playground/ChatView';
 import { styles, keyframes } from './playground/styles';
