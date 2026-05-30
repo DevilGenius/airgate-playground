@@ -61,13 +61,6 @@ export const keyframes = `
   outline: 2px solid var(--ag-border-focus, #3b82f6);
   outline-offset: 2px;
 }
-.pg-sidebar-collapse-button svg {
-  stroke-width: 2.5;
-}
-.pg-sidebar-collapse-button:hover {
-  background: var(--ag-bg-hover, rgba(148, 163, 184, 0.12)) !important;
-  color: var(--ag-text, #111827) !important;
-}
 .pg-input-wrapper:focus-within {
   border-color: color-mix(in oklab, var(--ag-primary, #2dd4bf) 35%, transparent) !important;
   box-shadow:
@@ -114,8 +107,9 @@ export const styles: Record<string, CSSProperties> = {
   },
   // ── Sidebar ──
   sidebar: {
-    width: 284,
-    minWidth: 284,
+    width: 320,
+    minWidth: 320,
+    maxWidth: 320,
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
@@ -125,42 +119,6 @@ export const styles: Record<string, CSSProperties> = {
     zIndex: 3,
     fontSynthesis: 'none',
     textRendering: 'geometricPrecision',
-  },
-  sidebarRail: {
-    width: 48,
-    minWidth: 48,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    paddingTop: 4,
-    background: cssVar('bgDeep'),
-    borderRight: `1px solid ${cssVar('borderSubtle')}`,
-    flexShrink: 0,
-    zIndex: 3,
-  },
-  sidebarRailMobile: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    background: 'transparent',
-    borderRight: 'none',
-    zIndex: 4,
-  },
-  sidebarBackdrop: {
-    position: 'absolute',
-    inset: 0,
-    background: 'rgba(6, 10, 18, 0.64)',
-    zIndex: 25,
-  },
-  sidebarMobile: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: 'min(84vw, 320px)',
-    minWidth: 'min(84vw, 320px)',
-    boxShadow: '0 18px 48px rgba(0, 0, 0, 0.32)',
-    zIndex: 30,
   },
   sidebarHeader: {
     display: 'flex',
@@ -172,7 +130,7 @@ export const styles: Record<string, CSSProperties> = {
   sidebarTopbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     gap: 8,
     minWidth: 0,
     height: 40,
@@ -271,28 +229,6 @@ export const styles: Record<string, CSSProperties> = {
     color: cssVar('textTertiary'),
     fontSize: 12,
   },
-  balanceBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    gap: 12,
-    margin: '8px 12px 12px',
-    padding: '12px 10px 0',
-    borderTop: `1px solid ${cssVar('borderSubtle')}`,
-  },
-  balanceLabel: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: cssVar('textTertiary'),
-    letterSpacing: '0.02em',
-  },
-  balanceValue: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: cssVar('text'),
-    fontVariantNumeric: 'tabular-nums',
-  },
-
   // ── Main ──
   main: {
     position: 'relative' as const,
@@ -302,21 +238,6 @@ export const styles: Record<string, CSSProperties> = {
     minHeight: 0,
     minWidth: 0,
     overflow: 'hidden',
-  },
-  toggleBtn: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    minWidth: 40,
-    height: 40,
-    border: 'none',
-    borderRadius: cssVar('radiusSm'),
-    background: 'transparent',
-    color: cssVar('textSecondary'),
-    cursor: 'pointer',
-    transition: cssVar('transition'),
-    flexShrink: 0,
   },
   // 模型和 reasoning 选择器嵌在输入卡片内，保持透明底，避免控件层级过重。
   selectors: {

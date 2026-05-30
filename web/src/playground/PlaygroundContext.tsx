@@ -99,8 +99,6 @@ export interface PlaygroundContextValue {
   setThinkingVisible: React.Dispatch<React.SetStateAction<boolean>>;
 
   isMobile: boolean;
-  sidebarOpen: boolean;
-  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   hoveredCopyTarget: string | null;
   setHoveredCopyTarget: React.Dispatch<React.SetStateAction<string | null>>;
 
@@ -136,6 +134,12 @@ export interface PlaygroundContextValue {
 }
 
 const PlaygroundContext = createContext<PlaygroundContextValue | null>(null);
+const USER_BALANCE_EVENT = 'airgate:user-balance-updated';
+
+function publishUserBalance(balance: number) {
+  if (typeof window === 'undefined' || !Number.isFinite(balance)) return;
+  window.dispatchEvent(new CustomEvent(USER_BALANCE_EVENT, { detail: { balance } }));
+}
 
 export function usePlayground() {
   const ctx = useContext(PlaygroundContext);
@@ -170,7 +174,6 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   const [interactionNotice, setInteractionNotice] = useState('');
   const [previewImage, setPreviewImage] = useState<ImagePreviewState | null>(null);
   const [hoveredCopyTarget, setHoveredCopyTarget] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(() => (
     typeof window !== 'undefined' ? window.innerWidth <= MOBILE_BREAKPOINT : false
   ));
@@ -218,6 +221,10 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     () => conversations.filter(item => item.id !== DRAFT_CONVERSATION_ID),
     [conversations],
   );
+  const applyUserInfo = useCallback((nextUserInfo: UserInfo) => {
+    setUserInfo(nextUserInfo);
+    publishUserBalance(nextUserInfo.balance);
+  }, []);
   const activeConversation = useMemo(
     () => conversations.find(item => item.id === activeId),
     [activeId, conversations],
@@ -250,8 +257,8 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
       }
     }).catch(() => setConversationsLoaded(true));
 
-    api.getUserInfo().then(setUserInfo).catch(() => {});
-  }, []);
+    api.getUserInfo().then(applyUserInfo).catch(() => {});
+  }, [applyUserInfo]);
 
   useEffect(() => {
     activeIdRef.current = activeId;
@@ -323,10 +330,6 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    setSidebarOpen(!isMobile);
-  }, [isMobile]);
-
-  useEffect(() => {
     if (!interactionNotice) return;
     const timer = window.setTimeout(() => setInteractionNotice(''), 1400);
     return () => window.clearTimeout(timer);
@@ -350,17 +353,15 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     setPendingImages([]);
     setError('');
     setRetryRequest(null);
-    if (isMobile) setSidebarOpen(false);
     requestAnimationFrame(() => inputRef.current?.focus());
-  }, [isMobile, resolveGroupID, selectedModelID, selectedPlatform, setMessages, userInfo?.id]);
+  }, [resolveGroupID, selectedModelID, selectedPlatform, setMessages, userInfo?.id]);
 
   const openConversation = useCallback((id: number) => {
     setActiveId(id);
     setPendingImages([]);
     setError('');
     setRetryRequest(null);
-    if (isMobile) setSidebarOpen(false);
-  }, [isMobile]);
+  }, []);
 
   const deleteConversation = useCallback(async (id: number) => {
     const confirmed = await window.airgate?.confirm?.(t('playground.delete_conversation_confirm'), {
@@ -479,7 +480,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
                   : item,
               ));
             }
-            api.getUserInfo().then(setUserInfo).catch(() => {});
+            api.getUserInfo().then(applyUserInfo).catch(() => {});
             setRetryRequest(null);
             finishStreaming();
           },
@@ -491,7 +492,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
       if (abort.signal.aborted) return;
       fail(err instanceof Error ? err.message : 'stream failed');
     }
-  }, [finishStreaming, reasoningEffort, setMessages, t]);
+  }, [applyUserInfo, finishStreaming, reasoningEffort, setMessages, t]);
 
   const sendMessage = useCallback(() => {
     void (async () => {
@@ -786,8 +787,6 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     thinkingVisible,
     setThinkingVisible,
     isMobile,
-    sidebarOpen,
-    setSidebarOpen,
     hoveredCopyTarget,
     setHoveredCopyTarget,
     inputRef,
