@@ -3,20 +3,10 @@ const BASE = '/api/v1/ext-user/airgate-playground';
 function getStoredToken() {
   if (typeof window === 'undefined') return '';
   try {
-    return window.localStorage.getItem('token') || '';
+    return window.sessionStorage.getItem('token') || window.localStorage.getItem('token') || '';
   } catch {
     return '';
   }
-}
-
-function clearStoredTokenAndRedirect() {
-  if (typeof window === 'undefined') return;
-  try {
-    window.localStorage.removeItem('token');
-  } catch {
-    // Storage can be unavailable in private mode or locked-down browsers.
-  }
-  window.location.href = '/login';
 }
 
 function authHeaders(): Record<string, string> {
@@ -43,9 +33,6 @@ async function request<T>(method: string, path: string, body?: unknown, base = B
       const j = JSON.parse(text);
       msg = j.error || j.message || msg;
     } catch { /* ignore */ }
-    if (resp.status === 401) {
-      clearStoredTokenAndRedirect();
-    }
     throw new Error(msg);
   }
 
