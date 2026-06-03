@@ -166,9 +166,6 @@ export async function chatCompletionsStream(
       const parsed = JSON.parse(text);
       msg = parsed.error?.message || parsed.error || parsed.message || msg;
     } catch { /* ignore */ }
-    if (resp.status === 401) {
-      clearStoredTokenAndRedirect();
-    }
     callbacks.onError(msg);
     return;
   }
