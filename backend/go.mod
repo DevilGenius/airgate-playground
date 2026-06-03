@@ -3,7 +3,7 @@ module github.com/DevilGenius/airgate-playground/backend
 go 1.26.3
 
 require (
-	github.com/DevilGenius/airgate-sdk v0.2.1
+	github.com/DevilGenius/airgate-sdk v0.2.2
 	github.com/lib/pq v1.10.9
 	google.golang.org/grpc v1.79.2
 )
