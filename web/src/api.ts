@@ -1,12 +1,18 @@
 const BASE = '/api/v1/ext-user/airgate-playground';
+const AUTH_TOKEN_STORAGE_KEY = 'ag:web:auth:token';
 
-function getStoredToken() {
+function readBrowserStorage(kind: 'localStorage' | 'sessionStorage', key: string): string {
   if (typeof window === 'undefined') return '';
   try {
-    return window.sessionStorage.getItem('token') || window.localStorage.getItem('token') || '';
+    return window[kind].getItem(key) || '';
   } catch {
     return '';
   }
+}
+
+function getStoredToken() {
+  return readBrowserStorage('sessionStorage', AUTH_TOKEN_STORAGE_KEY)
+    || readBrowserStorage('localStorage', AUTH_TOKEN_STORAGE_KEY);
 }
 
 function authHeaders(): Record<string, string> {
