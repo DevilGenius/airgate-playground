@@ -5,7 +5,6 @@ import { styles } from './styles';
 export function InputArea() {
   const {
     t,
-    isMobile,
     isActiveConversationStreaming,
     canSendMessage,
     input,
@@ -34,10 +33,9 @@ export function InputArea() {
   } = usePlayground();
 
   return (
-    <div style={{ ...styles.inputArea, ...(isMobile ? styles.inputAreaMobile : null) }}>
+    <div style={styles.inputArea}>
       <div style={{
         ...styles.inputWrapper,
-        ...(isMobile ? styles.inputWrapperMobile : null),
         ...(isActiveConversationStreaming ? styles.inputWrapperStreaming : null),
       }} className="pg-input-wrapper">
         {pendingImages.length > 0 && (
@@ -91,8 +89,8 @@ export function InputArea() {
           disabled={isActiveConversationStreaming}
         />
 
-        <div style={{ ...styles.inputActions, ...(isMobile ? styles.inputActionsMobile : null) }}>
-          <div style={{ ...styles.selectors, ...(isMobile ? styles.selectorsMobile : null) }}>
+        <div style={styles.inputActions}>
+          <div className="pg-selectors" style={styles.selectors}>
             {renderNativeSelect({
               id: 'model',
               value: selectedModel,
@@ -116,13 +114,13 @@ export function InputArea() {
             })}
           </div>
 
-          <div style={{ ...styles.inputButtonGroup, ...(isMobile ? styles.inputButtonGroupMobile : null) }}>
+          <div style={styles.inputButtonGroup}>
             <button
               type="button"
+              className="pg-input-action"
               style={{
                 ...styles.thinkingToggleBtn,
                 ...(thinkingVisible ? styles.thinkingToggleBtnActive : null),
-                ...(isMobile ? styles.actionBtnMobile : null),
               }}
               onMouseDown={event => event.preventDefault()}
               onClick={() => setThinkingVisible(value => !value)}
@@ -150,12 +148,15 @@ export function InputArea() {
                   <path d="M4 4l16 16" />
                 </svg>
               )}
-              {t('playground.thinking_title', { defaultValue: 'Thinking' })}
+              <span className="pg-input-action-label">
+                {t('playground.thinking_title', { defaultValue: 'Thinking' })}
+              </span>
             </button>
 
             <button
               type="button"
-              style={{ ...styles.attachBtn, ...(isMobile ? styles.actionBtnMobile : null) }}
+              className="pg-input-action"
+              style={styles.attachBtn}
               onMouseDown={event => event.preventDefault()}
               onClick={triggerImagePicker}
               disabled={isActiveConversationStreaming}
@@ -166,39 +167,45 @@ export function InputArea() {
                 <circle cx="8.5" cy="8.5" r="1.5" />
                 <path d="M21 15l-5-5L5 21" />
               </svg>
-              {t('playground.image')}
+              <span className="pg-input-action-label">
+                {t('playground.image')}
+              </span>
             </button>
 
             {isActiveConversationStreaming ? (
               <button
                 type="button"
-                style={{ ...styles.stopBtn, ...(isMobile ? styles.actionBtnMobile : null) }}
+                className="pg-send-action pg-stop-action"
+                style={styles.stopBtn}
                 onMouseDown={event => event.preventDefault()}
                 onClick={stopStreaming}
+                title={t('playground.stop')}
+                aria-label={t('playground.stop')}
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
                   <rect x="2" y="2" width="8" height="8" rx="1" />
                 </svg>
-                {t('playground.stop')}
+                <span className="pg-stop-label">{t('playground.stop')}</span>
               </button>
             ) : (
               <button
                 type="button"
+                className="pg-send-action"
                 style={{
                   ...styles.sendBtn,
-                  ...(isMobile ? styles.actionBtnMobile : null),
                   opacity: canSendMessage ? 1 : 0.4,
                 }}
                 onMouseDown={event => event.preventDefault()}
                 onClick={sendMessage}
                 disabled={!canSendMessage}
                 title={selectedPlatform && selectedModelID ? undefined : t('playground.select_model_first')}
+                aria-label={t('playground.send')}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 2L11 13" />
                   <path d="M22 2l-7 20-4-9-9-4 20-7z" />
                 </svg>
-                {t('playground.send')}
+                <span className="pg-send-label">{t('playground.send')}</span>
               </button>
             )}
           </div>

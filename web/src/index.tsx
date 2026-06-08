@@ -1,3 +1,4 @@
+import '@fontsource/fira-code/latin.css';
 import type { ComponentType } from 'react';
 import { lazy } from 'react';
 

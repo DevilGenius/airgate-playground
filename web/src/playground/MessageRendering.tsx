@@ -50,7 +50,7 @@ export function GeneratedImageFrame({ url, alt, options, imageIndex }: {
   ) : imageNode;
 
   return (
-    <span style={{ ...styles.generatedImageFrame, ...(options.isMobile ? styles.generatedImageFrameMobile : null) }}>
+    <span style={styles.generatedImageFrame}>
       {previewableImage}
       {dimensions && <span style={styles.generatedImageDimensions}>{dimensions}</span>}
     </span>
@@ -157,7 +157,7 @@ export function parseImageGroupImages(text: string) {
 
 export function renderImageGallery(images: Array<{ alt: string; url: string }>, key: string, options: MessageContentOptions = {}) {
   return (
-    <div key={key} style={{ ...styles.imageGroup, ...(options.isMobile ? styles.imageGroupMobile : null) }}>
+    <div key={key} style={styles.imageGroup}>
       {images.map((image, index) => renderGeneratedImage(`${key}-${index}`, image.url, image.alt || options.generatedImageAlt || 'Generated image', options))}
     </div>
   );

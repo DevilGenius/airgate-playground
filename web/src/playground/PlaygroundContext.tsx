@@ -735,8 +735,8 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
       aria-label={ariaLabel}
       style={{
         ...styles.selectTrigger,
-        minWidth: id === 'model' ? 188 : 112,
-        maxWidth: id === 'model' ? 280 : 132,
+        minWidth: id === 'model' ? 'var(--pg-model-select-min-w)' : 'var(--pg-reasoning-select-min-w)',
+        maxWidth: id === 'model' ? 'var(--pg-model-select-max-w)' : 'var(--pg-reasoning-select-max-w)',
         flexShrink: id === 'model' ? 1 : 0,
         ...style,
       }}

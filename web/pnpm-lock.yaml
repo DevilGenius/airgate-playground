@@ -11,6 +11,9 @@ importers:
       '@devilgenius/airgate-theme':
         specifier: https://github.com/DevilGenius/airgate-sdk/releases/download/v0.2.2/airgate-theme-v0.2.2.tgz
         version: https://github.com/DevilGenius/airgate-sdk/releases/download/v0.2.2/airgate-theme-v0.2.2.tgz(react@19.2.6)
+      '@fontsource/fira-code':
+        specifier: ^5.2.7
+        version: 5.2.7
       katex:
         specifier: ^0.16.45
         version: 0.16.47
@@ -293,6 +296,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource/fira-code@5.2.7':
+    resolution: {integrity: sha512-tnB9NNund9TwIym8/7DMJe573nlPEQb+fKUV5GL8TBYXjIhDvL0D7mgmNVNQUPhXp+R7RylQeiBdkA4EbOHPGQ==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -905,6 +911,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
+
+  '@fontsource/fira-code@5.2.7': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

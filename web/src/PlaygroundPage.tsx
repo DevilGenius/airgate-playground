@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
-import { cssVar } from '@devilgenius/airgate-theme';
 import { PlaygroundProvider, usePlayground } from './playground/PlaygroundContext';
 import { ChatView } from './playground/ChatView';
+import { ConversationSidebar } from './playground/ConversationSidebar';
+import { ConversationTabs } from './playground/ConversationTabs';
 import { styles, keyframes } from './playground/styles';
 
 export function ChatPage() {
@@ -15,79 +15,14 @@ export function ChatPage() {
 export default ChatPage;
 
 function PlaygroundShell() {
-  const { t } = useTranslation();
-  const {
-    activeId,
-    sidebarConversations,
-    createConversation,
-    openConversation,
-    deleteConversation,
-  } = usePlayground();
-
   return (
-    <div data-full-bleed data-pg-aesthetic style={styles.layout}>
+    <div data-full-bleed data-pg-aesthetic style={styles.layout} className="pg-layout">
       <ImagePreviewOverlay />
 
-      <div style={styles.sidebar}>
-        <div style={styles.sidebarHeader}>
-          <div style={styles.sidebarTopbar}>
-            <button
-              style={styles.newBtn}
-              className="pg-sidebar-action"
-              onClick={createConversation}
-              title={t('playground.new_conversation')}
-              aria-label={t('playground.new_conversation')}
-            >
-              <span style={styles.newBtnIcon}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                  <path d="M7 1v12M1 7h12" />
-                </svg>
-              </span>
-              <span>{t('playground.new_conversation')}</span>
-            </button>
-          </div>
-        </div>
-
-        <div style={styles.convList}>
-          {sidebarConversations.map(conversation => {
-            const isActive = conversation.id === activeId;
-            return (
-              <div
-                key={conversation.id}
-                className={`pg-conv-item${isActive ? ' is-active' : ''}`}
-                style={{ ...styles.convItem, ...(isActive ? styles.convItemActive : null) }}
-                onClick={() => openConversation(conversation.id)}
-              >
-                <span style={{ ...styles.convIcon, color: isActive ? cssVar('text') : cssVar('textTertiary') }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-                  </svg>
-                </span>
-                <span style={{ ...styles.convTitle, color: isActive ? cssVar('text') : cssVar('textSecondary'), fontWeight: isActive ? 500 : 400 }}>
-                  {conversation.title || t('playground.new_conversation')}
-                </span>
-                <button
-                  type="button"
-                  className="pg-conv-delete"
-                  style={styles.deleteBtn}
-                  onClick={(event) => { event.stopPropagation(); void deleteConversation(conversation.id); }}
-                  title={t('playground.delete_conversation')}
-                  aria-label={t('playground.delete_conversation')}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" />
-                  </svg>
-                </button>
-              </div>
-            );
-          })}
-          {sidebarConversations.length === 0 && (
-            <div style={styles.emptyConvList}><span>{t('playground.no_conversations')}</span></div>
-          )}
-        </div>
-      </div>
+      <ConversationSidebar />
 
       <div style={styles.main}>
+        <ConversationTabs />
         <ChatView />
       </div>
 
@@ -97,8 +32,7 @@ function PlaygroundShell() {
 }
 
 function ImagePreviewOverlay() {
-  const { t } = useTranslation();
-  const { previewImage, setPreviewImage, showNextPreviewImage } = usePlayground();
+  const { t, previewImage, setPreviewImage, showNextPreviewImage } = usePlayground();
 
   if (!previewImage) return null;
   const current = previewImage.images[previewImage.index] || previewImage.images[0];
