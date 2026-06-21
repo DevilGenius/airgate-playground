@@ -90,7 +90,7 @@ func (s *ObjectStorage) StoreImageBytes(ctx context.Context, userID int, convers
 	}
 	return &StoredAsset{
 		ID:          asset.ID,
-		ObjectKey:   filepath.ToSlash(asset.ObjectKey),
+		ObjectKey:   strings.ReplaceAll(filepath.ToSlash(asset.ObjectKey), "\\", "/"),
 		PublicURL:   asset.PublicURL,
 		ContentType: asset.ContentType,
 		SizeBytes:   asset.SizeBytes,
