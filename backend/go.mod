@@ -3,13 +3,13 @@ module github.com/DevilGenius/airgate-playground/backend
 go 1.26.3
 
 require (
-	github.com/DevilGenius/airgate-sdk v0.2.3
+	github.com/DATA-DOG/go-sqlmock v1.5.2
+	github.com/DevilGenius/airgate-sdk v0.2.4
 	github.com/lib/pq v1.10.9
 	google.golang.org/grpc v1.79.2
 )
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.2 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
