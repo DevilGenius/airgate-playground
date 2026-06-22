@@ -96,8 +96,10 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       external: SHARED_MODULES,
+    },
+    rolldownOptions: {
       output: {
-        inlineDynamicImports: true,
+        codeSplitting: false,
       },
     },
     watch: watchOptions,
