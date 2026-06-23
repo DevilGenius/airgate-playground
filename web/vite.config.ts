@@ -94,10 +94,8 @@ export default defineConfig({
       fileName: 'index',
     },
     outDir: 'dist',
-    rollupOptions: {
-      external: SHARED_MODULES,
-    },
     rolldownOptions: {
+      external: SHARED_MODULES,
       output: {
         codeSplitting: false,
       },
