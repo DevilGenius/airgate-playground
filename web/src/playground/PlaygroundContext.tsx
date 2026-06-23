@@ -6,7 +6,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
   type ReactNode,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -128,7 +127,6 @@ export interface PlaygroundContextValue {
     options: SelectOption[];
     onChange: (value: string) => void;
     ariaLabel: string;
-    style?: CSSProperties;
   }) => ReactNode;
   interactiveMessageOptions: MessageContentOptions;
 }
@@ -718,14 +716,12 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     options,
     onChange,
     ariaLabel,
-    style,
   }: {
     id: string;
     value: string;
     options: SelectOption[];
     onChange: (value: string) => void;
     ariaLabel: string;
-    style?: CSSProperties;
   }) => (
     <select
       id={id}
@@ -738,7 +734,6 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
         minWidth: id === 'model' ? 'var(--pg-model-select-min-w)' : 'var(--pg-reasoning-select-min-w)',
         maxWidth: id === 'model' ? 'var(--pg-model-select-max-w)' : 'var(--pg-reasoning-select-max-w)',
         flexShrink: id === 'model' ? 1 : 0,
-        ...style,
       }}
     >
       {options.map(option => (

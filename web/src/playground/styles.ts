@@ -4,95 +4,8 @@ import { cssVar } from '@devilgenius/airgate-theme';
 const PLAYGROUND_COMPOSER_TEXTAREA_HEIGHT = 88;
 
 export const keyframes = `
-/* ==========================================================================
-   AirGate Playground — Design token defaults & responsive variables
-   ========================================================================== */
-
-/*
-  Scoped defaults ensure graceful degradation without changing the host
-  AirGate shell menu or topbar. They mirror AMC-WebUI's pearl palette.
-*/
+/* ── Playground layout / responsive variables ── */
 [data-pg-aesthetic] {
-  /* ── AMC-WebUI pearl theme tokens ── */
-  --theme-bg-primary: #ffffff;
-  --theme-bg-secondary: #f9f9f9;
-  --theme-bg-tertiary: #ececf1;
-  --theme-bg-input: #ffffff;
-  --theme-bg-accent: #40414f;
-  --theme-bg-accent-hover: #202123;
-  --theme-bg-danger: #df3434;
-  --theme-bg-danger-hover: #b32929;
-  --theme-bg-code-block: #f7f7f8;
-  --theme-bg-user-message: #f3f4f6;
-  --theme-bg-user-message-text: #000000;
-  --theme-bg-model-message: transparent;
-  --theme-bg-error-message: #ffeeee;
-  --theme-bg-error-message-text: #df3434;
-  --theme-bg-success: rgba(22, 163, 74, 0.1);
-  --theme-bg-info: rgba(64, 65, 79, 0.05);
-
-  --theme-text-primary: #000000;
-  --theme-text-secondary: #000000;
-  --theme-text-tertiary: #666666;
-  --theme-text-accent: #ffffff;
-  --theme-text-danger: #df3434;
-  --theme-text-link: #2563eb;
-  --theme-text-code: #000000;
-  --theme-text-success: #16a34a;
-
-  --theme-border-primary: #e5e5e5;
-  --theme-border-secondary: #d9d9e3;
-  --theme-border-focus: #40414f;
-  --theme-scrollbar-thumb: #d9d9e3;
-
-  --theme-icon-history: #000000;
-  --theme-icon-attach: #323232;
-  --theme-icon-stop: #ffffff;
-  --theme-icon-settings: #000000;
-
-  /* ── AirGate token bridge scoped by inherited values ── */
-  --ag-bg: var(--theme-bg-secondary);
-  --ag-bg-deep: var(--theme-bg-secondary);
-  --ag-bg-surface: var(--theme-bg-secondary);
-  --ag-bg-elevated: var(--theme-bg-primary);
-  --ag-bg-hover: var(--theme-bg-tertiary);
-
-  --ag-text: var(--theme-text-primary);
-  --ag-text-secondary: var(--theme-text-secondary);
-  --ag-text-tertiary: var(--theme-text-tertiary);
-  --ag-text-inverse: var(--theme-text-accent);
-
-  --ag-primary: var(--theme-bg-accent);
-  --ag-primary-subtle: color-mix(in srgb, var(--theme-bg-accent) 10%, transparent);
-  --ag-primary-hover: var(--theme-bg-accent-hover);
-
-  --ag-danger: var(--theme-text-danger);
-  --ag-danger-subtle: color-mix(in srgb, var(--theme-bg-danger) 10%, transparent);
-
-  --ag-success: var(--theme-text-success);
-  --ag-success-subtle: var(--theme-bg-success);
-
-  --ag-border: var(--theme-border-secondary);
-  --ag-border-subtle: var(--theme-border-primary);
-  --ag-border-focus: var(--theme-border-focus);
-
-  --ag-glass: color-mix(in srgb, var(--theme-bg-primary) 88%, transparent);
-  --ag-glass-border: var(--theme-border-secondary);
-
-  --ag-radius-sm: 8px;
-  --ag-radius-md: 12px;
-  --ag-radius-lg: 16px;
-
-  --ag-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --ag-shadow-md: 0 10px 24px rgba(0, 0, 0, 0.10);
-  --ag-shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.16);
-
-  --ag-transition: 150ms ease;
-
-  --ag-font-sans: "Fira Code", ui-monospace, "SFMono-Regular", "SF Mono", "Cascadia Code", Consolas, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --ag-font-mono: "Fira Code", ui-monospace, "SFMono-Regular", "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", Menlo, Monaco, "Courier New", monospace;
-
-  /* ── Playground responsive properties (desktop defaults) ── */
   --pg-sidebar-width: 320px;
   --pg-sidebar-display: flex;
   --pg-conversation-tabs-display: none;
@@ -120,7 +33,7 @@ export const keyframes = `
   --pg-input-btn-min-h: var(--pg-composer-control-height);
   --pg-input-btn-padding: 0 12px;
   --pg-input-btn-justify: center;
-  --pg-core-button-radius: var(--field-radius, 0.5rem);
+  --pg-core-button-radius: var(--ag-field-radius, 0.5rem);
   --pg-selectors-wrap: nowrap;
   --pg-selectors-width: auto;
   --pg-selectors-gap: 8px;
@@ -135,52 +48,6 @@ export const keyframes = `
   --pg-error-bar-max-w: 44.35rem;
 }
 
-/* ── Dark theme overrides ── */
-[data-theme="dark"] [data-pg-aesthetic],
-.dark [data-pg-aesthetic],
-[data-pg-aesthetic][data-theme="dark"] {
-  --theme-bg-primary: #09090b;
-  --theme-bg-secondary: #000000;
-  --theme-bg-tertiary: #18181b;
-  --theme-bg-input: #121214;
-  --theme-bg-accent: #3b82f6;
-  --theme-bg-accent-hover: #2563eb;
-  --theme-bg-danger: #7f1d1d;
-  --theme-bg-danger-hover: #991b1b;
-  --theme-bg-code-block: #121214;
-  --theme-bg-user-message: #2563eb;
-  --theme-bg-user-message-text: #ffffff;
-  --theme-bg-model-message: transparent;
-  --theme-bg-error-message: rgba(127, 29, 29, 0.25);
-  --theme-bg-error-message-text: #fca5a5;
-  --theme-bg-success: rgba(6, 78, 59, 0.25);
-  --theme-bg-info: rgba(30, 58, 138, 0.25);
-
-  --theme-text-primary: #f4f4f5;
-  --theme-text-secondary: #a1a1aa;
-  --theme-text-tertiary: #52525b;
-  --theme-text-accent: #ffffff;
-  --theme-text-danger: #fca5a5;
-  --theme-text-link: #38bdf8;
-  --theme-text-code: #e4e4e7;
-  --theme-text-success: #4ade80;
-
-  --theme-border-primary: #18181b;
-  --theme-border-secondary: #27272a;
-  --theme-border-focus: #3b82f6;
-  --theme-scrollbar-thumb: #27272a;
-
-  --theme-icon-history: #a1a1aa;
-  --theme-icon-attach: #a1a1aa;
-  --theme-icon-stop: #ffffff;
-  --theme-icon-settings: #a1a1aa;
-
-  --ag-shadow-sm: 0 0 0 0 transparent;
-  --ag-shadow-md: 0 0 0 0 transparent;
-  --ag-shadow-lg: 0 0 1px rgba(255, 255, 255, 0.3) inset;
-}
-
-/* ── Mobile responsive overrides (≤ 960px) ── */
 @media (max-width: 960px) {
   [data-pg-aesthetic] {
     --pg-sidebar-display: none;
@@ -222,20 +89,10 @@ export const keyframes = `
   }
 }
 
-/* ── Animations ── */
-@keyframes pg-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-@keyframes pg-fadein {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes pg-spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes pg-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes pg-fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pg-spin { to { transform: rotate(360deg); } }
 
-/* ── Aesthetic baseline ── */
 [data-pg-aesthetic] {
   font-feature-settings: 'cv11' on, 'ss01' on;
   -webkit-font-smoothing: antialiased;
@@ -243,156 +100,123 @@ export const keyframes = `
   text-rendering: optimizeLegibility;
 }
 
-[data-pg-aesthetic] * {
-  box-sizing: border-box;
-}
+[data-pg-aesthetic] * { box-sizing: border-box; }
 
 [data-pg-aesthetic] ::selection {
-  background: #fde047;
-  color: #1f2937;
+  background: var(--ag-primary-subtle);
+  color: var(--ag-text);
 }
 
 [data-pg-aesthetic] textarea::placeholder {
-  color: var(--theme-text-tertiary, #666666);
+  color: var(--ag-field-placeholder);
 }
 
 .pg-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: var(--theme-scrollbar-thumb, #d9d9e3) transparent;
+  scrollbar-color: var(--ag-scrollbar) transparent;
 }
-.pg-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-.pg-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
+.pg-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.pg-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .pg-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--theme-scrollbar-thumb, #d9d9e3);
+  background-color: var(--ag-scrollbar);
   border-radius: 10px;
 }
 .pg-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: var(--theme-border-focus, #40414f);
+  background-color: color-mix(in oklab, var(--ag-scrollbar) 76%, var(--ag-text) 24%);
 }
 
-/* ── Sidebar / conversation item interactions ── */
 .pg-conv-delete {
   opacity: 0;
-  color: var(--theme-text-tertiary, #666666);
+  color: var(--ag-text-tertiary);
   transition: opacity 120ms ease, background 120ms ease, color 120ms ease;
 }
 .pg-conv-item:hover .pg-conv-delete,
-.pg-conv-item:focus-within .pg-conv-delete {
-  opacity: 1;
-}
+.pg-conv-item:focus-within .pg-conv-delete { opacity: 1; }
 .pg-conv-delete:hover {
-  background: color-mix(in srgb, var(--theme-bg-danger, #df3434) 10%, transparent);
-  color: var(--theme-text-danger, #df3434);
+  background: color-mix(in oklab, var(--ag-danger) 10%, transparent);
+  color: var(--ag-danger);
 }
 .pg-conv-delete:focus-visible {
   opacity: 1;
-  outline: 2px solid var(--theme-border-focus, #40414f);
+  outline: 1.5px solid var(--ag-border-focus);
   outline-offset: 1px;
 }
 
-.pg-conv-item {
-  position: relative;
-  background: var(--pg-conv-bg, transparent);
-}
+.pg-conv-item { position: relative; background: var(--pg-conv-bg, transparent); }
 .pg-conv-item:hover,
 .pg-sidebar-action:hover {
-  --pg-conv-bg: var(--theme-bg-tertiary, #ececf1);
-  --pg-sidebar-action-bg: var(--theme-bg-tertiary, #ececf1);
-  --pg-sidebar-action-color: var(--theme-text-primary, #000000);
+  --pg-conv-bg: var(--ag-bg-hover);
+  --pg-sidebar-action-bg: var(--ag-bg-hover);
+  --pg-sidebar-action-color: var(--ag-text);
 }
-.pg-conv-item.is-active {
-  --pg-conv-bg: var(--theme-bg-tertiary, #ececf1);
-}
+.pg-conv-item.is-active { --pg-conv-bg: var(--ag-bg-active); }
 .pg-sidebar-action:focus-visible {
-  outline: 2px solid var(--theme-border-focus, #40414f);
+  outline: 1.5px solid var(--ag-border-focus);
   outline-offset: 2px;
 }
 .pg-conv-open:focus-visible {
-  outline: 2px solid var(--theme-border-focus, #40414f);
+  outline: 1.5px solid var(--ag-border-focus);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: var(--ag-field-radius, 0.5rem);
 }
-.pg-conversation-tabs [role="tablist"]::-webkit-scrollbar {
-  display: none;
-}
+.pg-conversation-tabs [role="tablist"]::-webkit-scrollbar { display: none; }
 .pg-conversation-tab:hover {
-  --pg-tab-bg: var(--theme-bg-tertiary, #ececf1);
-  --pg-tab-color: var(--theme-text-primary, #000000);
+  background: var(--ag-bg-hover);
+  color: var(--ag-text);
 }
 .pg-conversation-tabs button:focus-visible {
-  outline: 2px solid var(--theme-border-focus, #40414f);
+  outline: 1.5px solid var(--ag-border-focus);
   outline-offset: 2px;
 }
 
-/* ── Input wrapper focus ring ── */
-.pg-input-wrapper:focus-within {
-  --pg-input-border: color-mix(in oklab, var(--theme-bg-accent, #40414f) 18%, var(--theme-border-secondary, #d9d9e3));
-  --pg-input-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.10),
-    0 2px 12px rgba(0, 0, 0, 0.06),
-    0 0 0 1px color-mix(in oklab, var(--theme-bg-accent, #40414f) 10%, transparent);
+[data-pg-aesthetic] :focus-visible {
+  outline: 1.5px solid var(--ag-border-focus);
+  outline-offset: 2px;
 }
 
-/* ── Native <select> styling ── */
-.pg-composer-select {
-  color-scheme: light;
+.pg-input-wrapper:focus-within {
+  border-color: var(--ag-border-focus);
+  box-shadow:
+    var(--ag-shadow-sm, 0 0 0 0 transparent),
+    0 0 0 1px color-mix(in oklab, var(--ag-primary) 18%, transparent);
 }
-[data-theme="dark"] .pg-composer-select,
-.dark .pg-composer-select {
-  color-scheme: dark;
-}
+
+.pg-composer-select { color-scheme: light; }
+[data-theme="dark"] .pg-composer-select, .dark .pg-composer-select { color-scheme: dark; }
 .pg-composer-select:hover {
-  --pg-select-bg: color-mix(in oklab, var(--field-background, var(--theme-bg-input, #ffffff)) 86%, var(--surface, var(--theme-bg-primary, #ffffff)) 14%);
-  --pg-select-border: color-mix(in oklab, var(--border, var(--theme-border-secondary, #d9d9e3)) 92%, var(--foreground, var(--theme-text-primary, #000000)) 8%);
-  --pg-select-color: var(--field-foreground, var(--theme-text-primary, #000000));
+  --pg-select-bg: color-mix(in oklab, var(--ag-field-background) 86%, var(--ag-surface) 14%);
+  --pg-select-border: color-mix(in oklab, var(--ag-border) 92%, var(--ag-text) 8%);
+  --pg-select-color: var(--ag-field-foreground);
 }
-.pg-composer-select:focus {
-  outline: none;
-}
+.pg-composer-select:focus { outline: none; }
 .pg-composer-select:focus-visible {
-  --pg-select-bg: color-mix(in oklab, var(--field-background, var(--theme-bg-input, #ffffff)) 72%, var(--surface, var(--theme-bg-primary, #ffffff)) 28%);
-  --pg-select-border: var(--focus, var(--theme-border-focus, #40414f));
-  box-shadow: var(--field-shadow, none), 0 0 0 1px var(--focus, var(--theme-border-focus, #40414f));
+  --pg-select-bg: color-mix(in oklab, var(--ag-field-background) 72%, var(--ag-surface) 28%);
+  --pg-select-border: var(--ag-border-focus);
+  box-shadow: var(--ag-shadow-sm, 0 0 0 0 transparent), 0 0 0 1px var(--ag-border-focus);
 }
 .pg-composer-select option {
-  background: var(--theme-bg-input, #ffffff);
-  color: var(--theme-text-primary, #000000);
+  background: var(--ag-field-background);
+  color: var(--ag-text);
 }
 
-.pg-selectors::-webkit-scrollbar {
-  display: none;
-}
+.pg-selectors::-webkit-scrollbar { display: none; }
 
 .pg-input-action:hover {
-  --pg-input-action-bg: var(--theme-bg-tertiary, #ececf1);
-  --pg-input-action-color: var(--theme-text-primary, #000000);
+  --pg-input-action-bg: var(--ag-bg-hover);
+  --pg-input-action-color: var(--ag-text);
 }
 
 .pg-input-action:focus-visible,
 .pg-send-action:focus-visible {
-  outline: 2px solid var(--theme-border-focus, #40414f);
+  outline: 1.5px solid var(--ag-border-focus);
   outline-offset: 2px;
 }
 
-.pg-send-action:hover {
-  --pg-send-bg: var(--theme-bg-accent-hover, #202123);
-}
+.pg-send-action:hover { --pg-send-bg: var(--ag-primary-hover); }
+.pg-stop-action:hover { --pg-stop-bg: color-mix(in oklab, var(--ag-danger) 88%, var(--ag-bg) 12%); }
 
-.pg-stop-action:hover {
-  --pg-stop-bg: var(--theme-bg-danger-hover, #b32929);
-}
+.pg-send-label, .pg-stop-label { display: none; }
 
-.pg-send-label,
-.pg-stop-label {
-  display: none;
-}
-
-/* ── Compact mobile layout ── */
 @media (max-width: 520px) {
   [data-pg-aesthetic] {
     --pg-msg-bubble-max-w: calc(100% - 18px);
@@ -407,10 +231,7 @@ export const keyframes = `
     --pg-reasoning-select-min-w: 92px;
     --pg-reasoning-select-max-w: 108px;
   }
-
-  .pg-input-action-label {
-    display: none;
-  }
+  .pg-input-action-label { display: none; }
 }
 `;
 
@@ -422,9 +243,9 @@ export const styles: Record<string, CSSProperties> = {
     minWidth: 0,
     position: 'relative',
     isolation: 'isolate',
-    background: 'var(--theme-bg-secondary)',
+    background: cssVar('bg'),
     fontFamily: cssVar('fontSans'),
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     overflow: 'hidden',
   },
   // ── Sidebar ──
@@ -432,11 +253,11 @@ export const styles: Record<string, CSSProperties> = {
     width: 'var(--pg-sidebar-width)',
     minWidth: 'var(--pg-sidebar-width)',
     maxWidth: 'var(--pg-sidebar-width)',
-    display: 'var(--pg-sidebar-display)' as any,
+    display: 'var(--pg-sidebar-display)' as CSSProperties['display'],
     flexDirection: 'column',
     minHeight: 0,
-    background: 'var(--theme-bg-secondary)',
-    borderRight: '1px solid var(--theme-border-primary)',
+    background: cssVar('bg'),
+    borderRight: `1px solid color-mix(in oklab, ${cssVar('border')} 28%, transparent)`,
     position: 'relative',
     zIndex: 3,
     fontSynthesis: 'none',
@@ -468,9 +289,9 @@ export const styles: Record<string, CSSProperties> = {
     gap: 8,
     padding: '8px 8px 8px 10px',
     border: 'none',
-    borderRadius: 8,
+    borderRadius: cssVar('fieldRadius'),
     background: 'var(--pg-sidebar-action-bg, transparent)',
-    color: 'var(--pg-sidebar-action-color, var(--theme-text-primary))',
+    color: 'var(--pg-sidebar-action-color, var(--ag-text))',
     cursor: 'pointer',
     transition: cssVar('transition'),
     flexShrink: 0,
@@ -499,11 +320,11 @@ export const styles: Record<string, CSSProperties> = {
     gap: 6,
     minHeight: 36,
     padding: '8px 8px 8px 10px',
-    borderRadius: 8,
+    borderRadius: cssVar('fieldRadius'),
     background: 'var(--pg-conv-bg, transparent)',
     transition: cssVar('transition'),
     margin: '2px 0',
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
   },
   convIcon: {
     display: 'inline-flex',
@@ -558,7 +379,7 @@ export const styles: Record<string, CSSProperties> = {
     alignItems: 'center',
     gap: 8,
     padding: '32px 16px',
-    color: 'var(--theme-text-tertiary)',
+    color: cssVar('textTertiary'),
     fontSize: 12,
   },
   // ── Main ──
@@ -570,7 +391,7 @@ export const styles: Record<string, CSSProperties> = {
     minHeight: 0,
     minWidth: 0,
     overflow: 'hidden',
-    background: 'var(--theme-bg-secondary)',
+    background: cssVar('bg'),
   },
   chatView: {
     display: 'flex',
@@ -579,16 +400,16 @@ export const styles: Record<string, CSSProperties> = {
     minHeight: 0,
     minWidth: 0,
     overflow: 'hidden',
-    background: 'var(--theme-bg-secondary)',
+    background: cssVar('bg'),
   },
   conversationTabs: {
-    display: 'var(--pg-conversation-tabs-display)' as any,
+    display: 'var(--pg-conversation-tabs-display)' as CSSProperties['display'],
     alignItems: 'center',
     gap: 8,
     minHeight: 48,
     padding: '7px 10px',
-    borderBottom: '1px solid var(--theme-border-primary)',
-    background: 'var(--theme-bg-secondary)',
+    borderBottom: `1px solid color-mix(in oklab, ${cssVar('border')} 28%, transparent)`,
+    background: cssVar('bg'),
     flexShrink: 0,
   },
   tabsNewBtn: {
@@ -597,10 +418,10 @@ export const styles: Record<string, CSSProperties> = {
     justifyContent: 'center',
     width: 34,
     height: 34,
-    border: '1px solid var(--theme-border-secondary)',
-    borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--theme-bg-input)',
-    color: 'var(--theme-text-primary)',
+    border: `1px solid ${cssVar('border')}`,
+    borderRadius: cssVar('fieldRadius'),
+    background: cssVar('fieldBackground'),
+    color: cssVar('text'),
     cursor: 'pointer',
     flexShrink: 0,
     transition: cssVar('transition'),
@@ -613,7 +434,7 @@ export const styles: Record<string, CSSProperties> = {
     minWidth: 0,
     overflowX: 'auto',
     overflowY: 'hidden',
-    scrollbarWidth: 'none' as any,
+    scrollbarWidth: 'none' as CSSProperties['scrollbarWidth'],
   },
   conversationTabItem: {
     display: 'inline-flex',
@@ -621,19 +442,19 @@ export const styles: Record<string, CSSProperties> = {
     gap: 4,
     maxWidth: 180,
     minWidth: 92,
-    height: 34,
-    padding: '0 4px 0 11px',
-    border: '1px solid var(--pg-tab-border, transparent)',
-    borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--pg-tab-bg, transparent)',
-    color: 'var(--pg-tab-color, var(--theme-text-secondary))',
-    flex: '0 0 auto',
+   height: 34,
+   padding: '0 4px 0 11px',
+    border: '1px solid transparent',
+   borderRadius: cssVar('fieldRadius'),
+    background: 'transparent',
+    color: cssVar('textSecondary'),
+   flex: '0 0 auto',
+ },
+ conversationTabItemActive: {
+    background: cssVar('bgHover'),
+    color: cssVar('text'),
+    borderColor: cssVar('border'),
   },
-  conversationTabItemActive: {
-    '--pg-tab-bg': 'var(--theme-bg-tertiary)',
-    '--pg-tab-color': 'var(--theme-text-primary)',
-    '--pg-tab-border': 'var(--theme-border-secondary)',
-  } as CSSProperties,
   conversationTabOpen: {
     flex: 1,
     minWidth: 0,
@@ -656,77 +477,33 @@ export const styles: Record<string, CSSProperties> = {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 24,
-    height: 24,
+    width: 22,
+    height: 22,
     border: 'none',
-    borderRadius: 6,
+    borderRadius: 999,
     background: 'transparent',
-    color: 'var(--theme-text-tertiary)',
+    color: cssVar('textTertiary'),
     cursor: 'pointer',
-    flexShrink: 0,
     padding: 0,
+    flexShrink: 0,
+    transition: cssVar('transition'),
   },
   emptyTabs: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    height: 34,
-    padding: '0 10px',
-    color: 'var(--theme-text-tertiary)',
+    color: cssVar('textTertiary'),
     fontSize: 12,
+    padding: '0 8px',
     whiteSpace: 'nowrap',
-  },
-  // ── Selectors (embedded in input card) ──
-  selectors: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--pg-selectors-gap)',
-    flexWrap: 'var(--pg-selectors-wrap)' as any,
-    minWidth: 0,
-    flex: '1 1 auto',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    scrollbarWidth: 'none' as any,
-    width: 'var(--pg-selectors-width)' as any,
-    maxWidth: '100%',
-  },
-  selectTrigger: {
-    display: 'block',
-    width: 'auto',
-    maxWidth: '100%',
-    height: 'var(--pg-composer-control-height)',
-    minHeight: 'var(--pg-composer-control-height)',
-    padding: '0 12px',
-    border: '1px solid var(--pg-select-border, var(--field-border, var(--theme-border-secondary)))',
-    borderRadius: 'var(--field-radius, 0.5rem)',
-    backgroundColor: 'var(--pg-select-bg, var(--field-background, var(--theme-bg-input)))',
-    backgroundClip: 'padding-box',
-    color: 'var(--pg-select-color, var(--field-foreground, var(--theme-text-primary)))',
-    boxShadow: 'var(--field-shadow, none)',
-    fontFamily: 'inherit',
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: '20px',
-    outline: 'none',
-    appearance: 'auto',
-    WebkitAppearance: 'menulist',
-    cursor: 'pointer',
-    transition: 'background-color 80ms ease, border-color 80ms ease, color 80ms ease, box-shadow 80ms ease',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
   },
   // ── Messages ──
   messagesArea: {
     flex: 1,
-    minHeight: 0,
     overflowY: 'auto',
     overflowX: 'hidden',
     position: 'relative',
     paddingTop: 'var(--pg-msg-area-padding-top)',
-    background: 'var(--theme-bg-secondary)',
-    scrollbarWidth: 'thin' as any,
-    scrollbarColor: 'var(--theme-scrollbar-thumb) transparent',
+    background: cssVar('bg'),
+    scrollbarWidth: 'thin' as CSSProperties['scrollbarWidth'],
+    scrollbarColor: `${cssVar('scrollbar')} transparent`,
   },
   messagesInner: {
     display: 'flex',
@@ -737,7 +514,6 @@ export const styles: Record<string, CSSProperties> = {
     margin: '0 auto',
     padding: '12px 0 18px',
   },
-  // ── Empty state ──
   emptyState: {
     display: 'flex',
     flexDirection: 'column',
@@ -759,9 +535,9 @@ export const styles: Record<string, CSSProperties> = {
     width: 44,
     height: 44,
     borderRadius: 999,
-    border: '1px solid var(--theme-border-secondary)',
-    background: 'var(--theme-bg-input)',
-    color: 'var(--theme-text-primary)',
+    border: `1px solid ${cssVar('border')}`,
+    background: cssVar('fieldBackground'),
+    color: cssVar('text'),
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: 0,
@@ -769,14 +545,14 @@ export const styles: Record<string, CSSProperties> = {
   emptyTitle: {
     fontSize: 34,
     fontWeight: 500,
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     lineHeight: 1.18,
     letterSpacing: 0,
     margin: 0,
   },
   emptyDesc: {
     fontSize: 14,
-    color: 'var(--theme-text-tertiary)',
+    color: cssVar('textTertiary'),
     lineHeight: 1.55,
     margin: 0,
   },
@@ -786,15 +562,14 @@ export const styles: Record<string, CSSProperties> = {
     padding: '9px 18px',
     border: 'none',
     borderRadius: 999,
-    background: 'var(--theme-bg-accent)',
-    color: 'var(--theme-text-accent)',
+    background: cssVar('primary'),
+    color: cssVar('primaryForeground'),
     fontSize: 13,
     fontWeight: 600,
     cursor: 'pointer',
     transition: cssVar('transition'),
     marginTop: 12,
   },
-  // ── Message row ──
   messageRow: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -804,12 +579,8 @@ export const styles: Record<string, CSSProperties> = {
     margin: '0 auto',
     padding: 'var(--pg-msg-row-padding)',
   },
-  messageRowUser: {
-    justifyContent: 'flex-end',
-  },
-  messageRowAssistant: {
-    justifyContent: 'flex-start',
-  },
+  messageRowUser: { justifyContent: 'flex-end' },
+  messageRowAssistant: { justifyContent: 'flex-start' },
   messageStack: {
     display: 'flex',
     flexDirection: 'column',
@@ -817,9 +588,7 @@ export const styles: Record<string, CSSProperties> = {
     minWidth: 0,
     maxWidth: 'var(--pg-msg-bubble-max-w)',
   },
-  messageStackUser: {
-    alignItems: 'flex-end',
-  },
+  messageStackUser: { alignItems: 'flex-end' },
   messageStackAssistant: {
     alignItems: 'flex-start',
     flex: 1,
@@ -835,16 +604,16 @@ export const styles: Record<string, CSSProperties> = {
   userBubble: {
     padding: 'var(--pg-user-bubble-padding)',
     borderRadius: 'var(--pg-user-bubble-radius)',
-    background: 'var(--theme-bg-user-message)',
-    color: 'var(--theme-bg-user-message-text)',
+    background: cssVar('primary'),
+    color: cssVar('primaryForeground'),
     borderColor: 'transparent',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+    boxShadow: cssVar('shadowSm'),
   },
   assistantBlock: {
     width: '100%',
     padding: '6px 2px',
     background: 'transparent',
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     borderColor: 'transparent',
   },
   messageCopyBtn: {
@@ -854,9 +623,9 @@ export const styles: Record<string, CSSProperties> = {
     width: 28,
     height: 28,
     border: 'none',
-    borderRadius: 8,
+    borderRadius: cssVar('fieldRadius'),
     background: 'transparent',
-    color: 'var(--theme-text-tertiary)',
+    color: cssVar('textTertiary'),
     cursor: 'pointer',
     transition: cssVar('transition'),
   },
@@ -877,15 +646,11 @@ export const styles: Record<string, CSSProperties> = {
     minWidth: 0,
     flexShrink: 0,
   },
-  messageActionRowLeft: {
-    justifyContent: 'flex-start',
-    marginLeft: 0,
-    marginRight: 'auto',
-  },
+  messageActionRowLeft: { justifyContent: 'flex-start', marginLeft: 0, marginRight: 'auto' },
   messageCopyUnderBubbleBtn: {
     width: 28,
     height: 28,
-    borderRadius: 'var(--pg-core-button-radius)',
+    borderRadius: cssVar('fieldRadius'),
     background: 'transparent',
   },
   messageContent: {
@@ -894,47 +659,13 @@ export const styles: Record<string, CSSProperties> = {
     wordBreak: 'break-word',
     color: 'inherit',
   },
-  markdownParagraph: {
-    margin: '0 0 11px',
-  },
-  markdownH1: {
-    margin: '4px 0 14px',
-    fontSize: 22,
-    fontWeight: 600,
-    lineHeight: 1.25,
-    letterSpacing: 0,
-    color: 'var(--theme-text-primary)',
-  },
-  markdownH2: {
-    margin: '18px 0 10px',
-    fontSize: 18,
-    fontWeight: 600,
-    lineHeight: 1.3,
-    letterSpacing: 0,
-    color: 'var(--theme-text-primary)',
-  },
-  markdownH3: {
-    margin: '16px 0 8px',
-    fontSize: 15,
-    fontWeight: 600,
-    lineHeight: 1.35,
-    color: 'var(--theme-text-primary)',
-  },
-  markdownH4: {
-    margin: '14px 0 8px',
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.4,
-    color: 'var(--theme-text-primary)',
-  },
-  markdownList: {
-    margin: '0 0 12px',
-    paddingLeft: 20,
-    color: 'var(--theme-text-primary)',
-  },
-  markdownListItem: {
-    margin: '4px 0',
-  },
+  markdownParagraph: { margin: '0 0 11px' },
+  markdownH1: { margin: '4px 0 14px', fontSize: 22, fontWeight: 600, lineHeight: 1.25, letterSpacing: 0, color: cssVar('text') },
+  markdownH2: { margin: '18px 0 10px', fontSize: 18, fontWeight: 600, lineHeight: 1.3, letterSpacing: 0, color: cssVar('text') },
+  markdownH3: { margin: '16px 0 8px', fontSize: 15, fontWeight: 600, lineHeight: 1.35, color: cssVar('text') },
+  markdownH4: { margin: '14px 0 8px', fontSize: 14, fontWeight: 600, lineHeight: 1.4, color: cssVar('text') },
+  markdownList: { margin: '0 0 12px', paddingLeft: 20, color: cssVar('text') },
+  markdownListItem: { margin: '4px 0' },
   markdownBlockquote: {
     margin: '0 0 12px',
     padding: '9px 13px',
@@ -947,10 +678,10 @@ export const styles: Record<string, CSSProperties> = {
   markdownCodeBlock: {
     margin: '4px 0 14px',
     padding: '13px 15px',
-    borderRadius: 12,
-    background: 'var(--theme-bg-code-block)',
-    border: '1px solid var(--theme-border-secondary)',
-    color: 'var(--theme-text-code)',
+    borderRadius: cssVar('fieldRadius'),
+    background: cssVar('bgElevated'),
+    border: `1px solid ${cssVar('border')}`,
+    color: cssVar('text'),
     fontFamily: cssVar('fontMono'),
     fontSize: 12.5,
     lineHeight: 1.72,
@@ -960,9 +691,9 @@ export const styles: Record<string, CSSProperties> = {
   markdownInlineCode: {
     padding: '1px 5px 2px',
     borderRadius: 6,
-    background: 'var(--theme-bg-info)',
-    border: '1px solid var(--theme-bg-info)',
-    color: 'var(--theme-text-link)',
+    background: cssVar('bgHover'),
+    border: `1px solid ${cssVar('borderSubtle')}`,
+    color: cssVar('text'),
     fontFamily: cssVar('fontMono'),
     fontSize: '0.9em',
   },
@@ -976,15 +707,15 @@ export const styles: Record<string, CSSProperties> = {
   markdownBlockMath: {
     margin: '4px 0 14px',
     padding: '12px 14px',
-    borderRadius: 12,
-    background: 'var(--theme-bg-input)',
-    border: '1px solid var(--theme-border-secondary)',
-    color: 'var(--theme-text-primary)',
+    borderRadius: cssVar('fieldRadius'),
+    background: cssVar('fieldBackground'),
+    border: `1px solid ${cssVar('border')}`,
+    color: cssVar('text'),
     overflowX: 'auto',
     overflowY: 'hidden',
   },
   markdownLink: {
-    color: 'var(--theme-text-link)',
+    color: cssVar('info'),
     textDecoration: 'underline',
     textDecorationColor: 'currentColor',
     textUnderlineOffset: 3,
@@ -992,15 +723,15 @@ export const styles: Record<string, CSSProperties> = {
   markdownDivider: {
     height: 1,
     border: 0,
-    background: 'var(--theme-border-secondary)',
+    background: cssVar('borderSubtle'),
     margin: '16px 0',
   },
   reasoningBox: {
     marginBottom: 10,
     padding: '10px 12px',
-    borderRadius: 14,
-    background: 'color-mix(in srgb, var(--theme-bg-tertiary) 24%, transparent)',
-    border: '1px solid var(--theme-border-secondary)',
+    borderRadius: cssVar('fieldRadius'),
+    background: `color-mix(in oklab, ${cssVar('bgHover')} 24%, transparent)`,
+    border: `1px solid ${cssVar('borderSubtle')}`,
   },
   reasoningSummary: {
     cursor: 'pointer',
@@ -1009,7 +740,7 @@ export const styles: Record<string, CSSProperties> = {
     gap: 8,
     fontSize: 12,
     fontWeight: 600,
-    color: 'var(--theme-text-secondary)',
+    color: cssVar('textSecondary'),
     userSelect: 'none',
   },
   reasoningContent: {
@@ -1017,7 +748,7 @@ export const styles: Record<string, CSSProperties> = {
     fontSize: 13,
     lineHeight: 1.6,
     wordBreak: 'break-word',
-    color: 'var(--theme-text-secondary)',
+    color: cssVar('textSecondary'),
   },
   imageGroup: {
     display: 'flex',
@@ -1033,8 +764,8 @@ export const styles: Record<string, CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: 8,
-    flex: 'var(--pg-image-frame-flex)' as any,
-    maxWidth: 'var(--pg-image-frame-max-w)' as any,
+    flex: 'var(--pg-image-frame-flex)' as CSSProperties['flex'],
+    maxWidth: 'var(--pg-image-frame-max-w)' as CSSProperties['maxWidth'],
     minWidth: 0,
   },
   generatedImagePreviewBtn: {
@@ -1051,8 +782,8 @@ export const styles: Record<string, CSSProperties> = {
     display: 'block',
     marginTop: 4,
     fontSize: 11,
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-    color: 'var(--theme-text-tertiary)',
+    fontFamily: cssVar('fontMono'),
+    color: cssVar('textTertiary'),
     textAlign: 'center' as const,
   },
   generatedImage: {
@@ -1060,8 +791,8 @@ export const styles: Record<string, CSSProperties> = {
     maxHeight: 420,
     width: '100%',
     height: 'auto',
-    borderRadius: 12,
-    border: '1px solid var(--theme-border-secondary)',
+    borderRadius: cssVar('fieldRadius'),
+    border: `1px solid ${cssVar('border')}`,
     objectFit: 'contain',
   },
   imagePreviewOverlay: {
@@ -1081,10 +812,10 @@ export const styles: Record<string, CSSProperties> = {
     maxWidth: 'min(94vw, 1120px)',
     maxHeight: '90vh',
     width: 'fit-content',
-    borderRadius: 16,
-    border: '1px solid var(--theme-border-secondary)',
-    background: 'var(--theme-bg-primary)',
-    boxShadow: '0 28px 90px rgba(0, 0, 0, 0.45)',
+    borderRadius: cssVar('fieldRadius'),
+    border: `1px solid ${cssVar('border')}`,
+    background: cssVar('bgElevated'),
+    boxShadow: cssVar('shadowMd'),
     overflow: 'hidden',
   },
   imagePreviewNavBtn: {
@@ -1096,15 +827,15 @@ export const styles: Record<string, CSSProperties> = {
     justifyContent: 'center',
     width: 42,
     height: 42,
-    border: '1px solid var(--theme-border-secondary)',
-    borderRadius: '999px',
+    border: `1px solid ${cssVar('border')}`,
+    borderRadius: 999,
     background: cssVar('glass'),
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     fontSize: 34,
     lineHeight: 1,
     cursor: 'pointer',
     backdropFilter: 'blur(10px)',
-    boxShadow: cssVar('shadowMd'),
+    boxShadow: cssVar('shadowSm'),
   },
   imagePreviewCounter: {
     position: 'absolute',
@@ -1112,13 +843,13 @@ export const styles: Record<string, CSSProperties> = {
     bottom: 12,
     transform: 'translateX(-50%)',
     padding: '5px 10px',
-    borderRadius: '999px',
-    border: '1px solid var(--theme-border-secondary)',
+    borderRadius: 999,
+    border: `1px solid ${cssVar('border')}`,
     background: cssVar('glass'),
-    color: 'var(--theme-text-secondary)',
+    color: cssVar('textSecondary'),
     fontSize: 12,
     backdropFilter: 'blur(10px)',
-    boxShadow: cssVar('shadowMd'),
+    boxShadow: cssVar('shadowSm'),
   },
   imagePreviewCloseBtn: {
     position: 'absolute',
@@ -1129,15 +860,15 @@ export const styles: Record<string, CSSProperties> = {
     justifyContent: 'center',
     width: 32,
     height: 32,
-    border: '1px solid var(--theme-border-secondary)',
-    borderRadius: '999px',
+    border: `1px solid ${cssVar('border')}`,
+    borderRadius: 999,
     background: cssVar('glass'),
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     fontSize: 22,
     lineHeight: 1,
     cursor: 'pointer',
     backdropFilter: 'blur(10px)',
-    boxShadow: cssVar('shadowMd'),
+    boxShadow: cssVar('shadowSm'),
   },
   imagePreviewLarge: {
     display: 'block',
@@ -1146,7 +877,7 @@ export const styles: Record<string, CSSProperties> = {
     width: 'auto',
     height: 'auto',
     objectFit: 'contain',
-    background: 'var(--theme-bg-primary)',
+    background: cssVar('bgElevated'),
   },
   interactionNotice: {
     position: 'sticky',
@@ -1154,12 +885,12 @@ export const styles: Record<string, CSSProperties> = {
     alignSelf: 'center',
     zIndex: 4,
     padding: '7px 12px',
-    borderRadius: '999px',
-    background: 'var(--theme-bg-primary)',
-    border: '1px solid var(--theme-border-secondary)',
-    color: 'var(--theme-text-secondary)',
+    borderRadius: 999,
+    background: cssVar('bgElevated'),
+    border: `1px solid ${cssVar('border')}`,
+    color: cssVar('textSecondary'),
     fontSize: 12,
-    boxShadow: cssVar('shadowMd'),
+    boxShadow: cssVar('shadowSm'),
   },
   messageMeta: {
     display: 'flex',
@@ -1167,7 +898,7 @@ export const styles: Record<string, CSSProperties> = {
     gap: 6,
     marginTop: 0,
     fontSize: 11,
-    color: 'var(--theme-text-tertiary)',
+    color: cssVar('textTertiary'),
   },
   metaBadge: {
     display: 'inline-flex',
@@ -1175,19 +906,19 @@ export const styles: Record<string, CSSProperties> = {
     height: 28,
     minHeight: 28,
     padding: '0 8px',
-    borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--theme-bg-input)',
-    border: '1px solid var(--theme-border-secondary)',
+    borderRadius: cssVar('fieldRadius'),
+    background: cssVar('fieldBackground'),
+    border: `1px solid ${cssVar('borderSubtle')}`,
     fontSize: 11,
     fontFamily: cssVar('fontMono'),
     lineHeight: '26px',
-    color: 'var(--theme-text-secondary)',
+    color: cssVar('textSecondary'),
   },
   streamingDot: {
     width: 6,
     height: 6,
     borderRadius: '50%',
-    background: 'var(--theme-bg-accent)',
+    background: cssVar('primary'),
     animation: 'pg-pulse 1.2s ease-in-out infinite',
   },
   thinkingDots: {
@@ -1202,30 +933,27 @@ export const styles: Record<string, CSSProperties> = {
     maxWidth: 'var(--pg-error-bar-max-w)',
     width: 'calc(100% - 28px)',
     padding: '10px 14px',
-    borderRadius: 12,
-    background: 'var(--theme-bg-error-message)',
-    color: 'var(--theme-bg-error-message-text)',
+    borderRadius: cssVar('fieldRadius'),
+    background: cssVar('dangerSubtle'),
+    color: cssVar('danger'),
     fontSize: 13,
-    border: '1px solid color-mix(in srgb, var(--theme-bg-danger) 28%, transparent)',
+    border: `1px solid color-mix(in oklab, ${cssVar('danger')} 28%, transparent)`,
   },
-  errorMessage: {
-    flex: 1,
-    minWidth: 0,
-  },
+  errorMessage: { flex: 1, minWidth: 0 },
   recoverableBar: {
-    background: 'var(--theme-bg-info)',
-    color: 'var(--theme-text-link)',
-    borderColor: 'color-mix(in srgb, var(--theme-text-link) 22%, transparent)',
+    background: cssVar('infoSubtle'),
+    color: cssVar('info'),
+    borderColor: `color-mix(in oklab, ${cssVar('info')} 22%, transparent)`,
   },
   errorRetryBtn: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: 6,
     padding: '5px 10px',
-    borderRadius: '999px',
-    border: '1px solid color-mix(in srgb, var(--theme-bg-danger) 28%, transparent)',
-    background: 'color-mix(in srgb, var(--theme-bg-danger) 10%, transparent)',
-    color: 'var(--theme-text-danger)',
+    borderRadius: 999,
+    border: `1px solid color-mix(in oklab, ${cssVar('danger')} 28%, transparent)`,
+    background: `color-mix(in oklab, ${cssVar('danger')} 10%, transparent)`,
+    color: cssVar('danger'),
     fontSize: 12,
     fontWeight: 700,
     cursor: 'pointer',
@@ -1236,10 +964,10 @@ export const styles: Record<string, CSSProperties> = {
     alignItems: 'center',
     gap: 6,
     padding: '5px 10px',
-    borderRadius: '999px',
-    border: '1px solid color-mix(in srgb, var(--theme-text-link) 24%, transparent)',
-    background: 'var(--theme-bg-info)',
-    color: 'var(--theme-text-link)',
+    borderRadius: 999,
+    border: `1px solid color-mix(in oklab, ${cssVar('info')} 24%, transparent)`,
+    background: cssVar('infoSubtle'),
+    color: cssVar('info'),
     fontSize: 12,
     fontWeight: 700,
     cursor: 'pointer',
@@ -1256,19 +984,17 @@ export const styles: Record<string, CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     gap: 8,
-    border: '1px solid var(--pg-input-border, var(--theme-border-secondary))',
+    border: `1px solid ${cssVar('border')}`,
     borderRadius: 26,
-    background: 'var(--theme-bg-input)',
+    background: cssVar('fieldBackground'),
     padding: 'var(--pg-input-wrapper-padding)',
-    boxShadow: 'var(--pg-input-shadow, 0 12px 28px rgba(0, 0, 0, 0.12))',
+    boxShadow: cssVar('shadowSm'),
     transition: 'box-shadow 200ms ease, border-color 150ms ease, background-color 150ms ease',
     width: '100%',
     maxWidth: 'var(--pg-input-wrapper-max-w)',
     margin: '0 auto',
   },
-  inputWrapperStreaming: {
-    borderColor: 'var(--theme-border-secondary)',
-  },
+  inputWrapperStreaming: { borderColor: cssVar('border') },
   imagePreviewList: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -1280,10 +1006,10 @@ export const styles: Record<string, CSSProperties> = {
     width: 96,
     height: 96,
     padding: 0,
-    borderRadius: 12,
+    borderRadius: cssVar('fieldRadius'),
     overflow: 'hidden',
-    border: '1px solid var(--theme-border-secondary)',
-    background: 'color-mix(in srgb, var(--theme-bg-tertiary) 30%, transparent)',
+    border: `1px solid ${cssVar('borderSubtle')}`,
+    background: `color-mix(in oklab, ${cssVar('bgHover')} 30%, transparent)`,
     cursor: 'pointer',
   },
   imagePreview: {
@@ -1298,10 +1024,10 @@ export const styles: Record<string, CSSProperties> = {
     right: 4,
     width: 20,
     height: 20,
-    border: '1px solid var(--theme-border-secondary)',
+    border: `1px solid ${cssVar('borderSubtle')}`,
     borderRadius: 999,
     background: cssVar('glass'),
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     cursor: 'pointer',
     lineHeight: '20px',
     padding: 0,
@@ -1315,7 +1041,7 @@ export const styles: Record<string, CSSProperties> = {
     padding: '6px 4px 2px',
     border: 'none',
     background: 'transparent',
-    color: 'var(--theme-text-primary)',
+    color: cssVar('text'),
     fontSize: 16,
     fontFamily: 'inherit',
     resize: 'none',
@@ -1327,45 +1053,43 @@ export const styles: Record<string, CSSProperties> = {
   inputActions: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'var(--pg-input-actions-align)',
+    alignItems: 'var(--pg-input-actions-align)' as CSSProperties['alignItems'],
     gap: 'var(--pg-input-actions-gap)',
     padding: '2px 0 0',
-    flexDirection: 'var(--pg-input-actions-direction)' as any,
+    flexDirection: 'var(--pg-input-actions-direction)' as CSSProperties['flexDirection'],
     minWidth: 0,
   },
   inputButtonGroup: {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--pg-input-btn-gap)',
-    width: 'var(--pg-input-btn-group-width)' as any,
+    width: 'var(--pg-input-btn-group-width)' as CSSProperties['width'],
     minWidth: 0,
-    justifyContent: 'var(--pg-input-btn-group-justify)' as any,
+    justifyContent: 'var(--pg-input-btn-group-justify)' as CSSProperties['justifyContent'],
     flexShrink: 0,
   },
-  fileInput: {
-    display: 'none',
-  },
+  fileInput: { display: 'none' },
   attachBtn: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: 7,
     height: 'var(--pg-composer-control-height)',
     padding: 'var(--pg-input-btn-padding)',
-    border: '1px solid var(--field-border, var(--theme-border-secondary))',
+    border: `1px solid ${cssVar('border')}`,
     borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--pg-input-action-bg, var(--field-background, var(--theme-bg-input)))',
-    color: 'var(--pg-input-action-color, var(--theme-icon-attach))',
-    boxShadow: 'var(--field-shadow, none)',
+    background: 'var(--pg-input-action-bg, var(--ag-field-background))',
+    color: 'var(--pg-input-action-color, var(--ag-text-secondary))',
+    boxShadow: cssVar('shadowSm'),
     fontSize: 13,
     fontWeight: 500,
     lineHeight: '20px',
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
     cursor: 'pointer',
-    transition: 'background-color 150ms ease, color 150ms ease, opacity 150ms ease',
-    minWidth: 'var(--pg-input-btn-min-w)' as any,
-    minHeight: 'var(--pg-input-btn-min-h)' as any,
-    justifyContent: 'var(--pg-input-btn-justify)' as any,
+    transition: 'background-color 80ms ease, border-color 80ms ease, color 80ms ease',
+    minWidth: 'var(--pg-input-btn-min-w)' as CSSProperties['minWidth'],
+    minHeight: 'var(--pg-input-btn-min-h)' as CSSProperties['minHeight'],
+    justifyContent: 'var(--pg-input-btn-justify)' as CSSProperties['justifyContent'],
   },
   thinkingToggleBtn: {
     display: 'inline-flex',
@@ -1373,26 +1097,26 @@ export const styles: Record<string, CSSProperties> = {
     gap: 7,
     height: 'var(--pg-composer-control-height)',
     padding: 'var(--pg-input-btn-padding)',
-    border: '1px solid var(--field-border, var(--theme-border-secondary))',
+    border: `1px solid ${cssVar('border')}`,
     borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--pg-input-action-bg, var(--field-background, var(--theme-bg-input)))',
-    color: 'var(--pg-input-action-color, var(--theme-icon-settings))',
-    boxShadow: 'var(--field-shadow, none)',
+    background: 'var(--pg-input-action-bg, var(--ag-field-background))',
+    color: 'var(--pg-input-action-color, var(--ag-text-secondary))',
+    boxShadow: cssVar('shadowSm'),
     fontSize: 13,
     fontWeight: 500,
     lineHeight: '20px',
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
     cursor: 'pointer',
-    transition: 'background-color 150ms ease, color 150ms ease, opacity 150ms ease',
-    minWidth: 'var(--pg-input-btn-min-w)' as any,
-    minHeight: 'var(--pg-input-btn-min-h)' as any,
-    justifyContent: 'var(--pg-input-btn-justify)' as any,
+    transition: 'background-color 80ms ease, border-color 80ms ease, color 80ms ease',
+    minWidth: 'var(--pg-input-btn-min-w)' as CSSProperties['minWidth'],
+    minHeight: 'var(--pg-input-btn-min-h)' as CSSProperties['minHeight'],
+    justifyContent: 'var(--pg-input-btn-justify)' as CSSProperties['justifyContent'],
   },
   thinkingToggleBtnActive: {
-    background: 'color-mix(in srgb, var(--theme-bg-accent) 10%, transparent)',
-    borderColor: 'color-mix(in srgb, var(--theme-bg-accent) 24%, var(--field-border, var(--theme-border-secondary)))',
-    color: 'var(--theme-text-link)',
+    background: cssVar('primarySubtle'),
+    borderColor: `color-mix(in oklab, ${cssVar('primary')} 24%, ${cssVar('border')})`,
+    color: cssVar('primary'),
   },
   sendBtn: {
     display: 'inline-flex',
@@ -1404,8 +1128,8 @@ export const styles: Record<string, CSSProperties> = {
     padding: 0,
     border: 'none',
     borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--pg-send-bg, var(--theme-bg-accent))',
-    color: 'var(--theme-text-accent)',
+    background: 'var(--pg-send-bg, var(--ag-primary))',
+    color: cssVar('primaryForeground'),
     fontSize: 0,
     fontWeight: 600,
     lineHeight: 1,
@@ -1427,8 +1151,8 @@ export const styles: Record<string, CSSProperties> = {
     padding: 0,
     border: 'none',
     borderRadius: 'var(--pg-core-button-radius)',
-    background: 'var(--pg-stop-bg, var(--theme-bg-danger))',
-    color: 'var(--theme-icon-stop)',
+    background: 'var(--pg-stop-bg, var(--ag-danger))',
+    color: cssVar('dangerForeground'),
     fontSize: 0,
     fontWeight: 600,
     lineHeight: 1,
@@ -1438,5 +1162,39 @@ export const styles: Record<string, CSSProperties> = {
     minWidth: 'var(--pg-composer-control-height)',
     minHeight: 'var(--pg-composer-control-height)',
     flexShrink: 0,
+  },
+  selectors: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'var(--pg-selectors-wrap)' as CSSProperties['flexWrap'],
+    gap: 'var(--pg-selectors-gap)',
+    width: 'var(--pg-selectors-width)' as CSSProperties['width'],
+    minWidth: 0,
+  },
+  selectTrigger: {
+    display: 'block',
+    width: 'auto',
+    maxWidth: '100%',
+    height: 'var(--pg-composer-control-height)',
+    minHeight: 'var(--pg-composer-control-height)',
+    padding: '0 12px',
+    border: `1px solid var(--pg-select-border, ${cssVar('border')})`,
+    borderRadius: cssVar('fieldRadius'),
+    backgroundColor: 'var(--pg-select-bg, var(--ag-field-background))',
+    backgroundClip: 'padding-box',
+    color: 'var(--pg-select-color, var(--ag-field-foreground))',
+    boxShadow: cssVar('shadowSm'),
+    fontFamily: 'inherit',
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: '20px',
+    outline: 'none',
+    appearance: 'auto',
+    WebkitAppearance: 'menulist',
+    cursor: 'pointer',
+    transition: 'background-color 80ms ease, border-color 80ms ease, color 80ms ease, box-shadow 80ms ease',
+    overflow: 'hidden',
+    boxSizing: 'border-box',
+    flexShrink: 1,
   },
 };
