@@ -48,7 +48,6 @@ import {
   toChatMessageContent,
   writeLocalStorageValue,
 } from './utils';
-import { styles } from './styles';
 import { CHAT_MODEL_REGISTRY } from './modelConfig';
 
 declare global {
@@ -121,13 +120,6 @@ export interface PlaygroundContextValue {
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   handlePaste: (event: React.ClipboardEvent<HTMLTextAreaElement>) => void;
   handleKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  renderNativeSelect: (props: {
-    id: string;
-    value: string;
-    options: SelectOption[];
-    onChange: (value: string) => void;
-    ariaLabel: string;
-  }) => ReactNode;
   interactiveMessageOptions: MessageContentOptions;
 }
 
@@ -211,7 +203,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     return CHAT_MODEL_REGISTRY
       .map(model => ({
         value: modelOptionValue(model),
-        label: `${model.name || model.id} · ${model.platform}`,
+        label: `${model.name || model.id} › ${model.platform}`,
       }));
   }, []);
 
@@ -710,38 +702,6 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const renderNativeSelect = useCallback(({
-    id,
-    value,
-    options,
-    onChange,
-    ariaLabel,
-  }: {
-    id: string;
-    value: string;
-    options: SelectOption[];
-    onChange: (value: string) => void;
-    ariaLabel: string;
-  }) => (
-    <select
-      id={id}
-      className="pg-composer-select"
-      value={value}
-      onChange={event => onChange(event.target.value)}
-      aria-label={ariaLabel}
-      style={{
-        ...styles.selectTrigger,
-        minWidth: id === 'model' ? 'var(--pg-model-select-min-w)' : 'var(--pg-reasoning-select-min-w)',
-        maxWidth: id === 'model' ? 'var(--pg-model-select-max-w)' : 'var(--pg-reasoning-select-max-w)',
-        flexShrink: id === 'model' ? 1 : 0,
-      }}
-    >
-      {options.map(option => (
-        <option key={option.value} value={option.value}>{option.label}</option>
-      ))}
-    </select>
-  ), []);
-
   const interactiveMessageOptions = useMemo<MessageContentOptions>(() => ({
     imagePreviewTitle: t('playground.preview_image'),
     generatedImageAlt: t('playground.generated_image'),
@@ -803,7 +763,6 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     handleImageChange,
     handlePaste,
     handleKeyDown,
-    renderNativeSelect,
     interactiveMessageOptions,
   };
 

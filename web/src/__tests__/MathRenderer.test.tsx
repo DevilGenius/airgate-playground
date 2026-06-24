@@ -16,7 +16,7 @@ describe('MathRenderer', () => {
     window.katex = { renderToString };
     const MathRenderer = await loadMathRenderer();
 
-    render(<MathRenderer displayMode={false} style={{ color: 'red' }} tex="x+1" />);
+    render(<MathRenderer displayMode={false} tex="x+1" />);
 
     expect(await screen.findByTestId('math-html')).toHaveTextContent('rendered');
     expect(renderToString).toHaveBeenCalledWith('x+1', {
@@ -32,7 +32,7 @@ describe('MathRenderer', () => {
     const MathRenderer = await loadMathRenderer();
     const renderToString = vi.fn().mockReturnValue('<strong data-testid="loaded-math">loaded</strong>');
 
-    render(<MathRenderer displayMode style={{ display: 'block' }} tex="y" />);
+    render(<MathRenderer displayMode tex="y" />);
     expect(screen.getByText('y').tagName).toBe('DIV');
 
     const script = document.head.querySelector('script#airgate-playground-katex-js') as HTMLScriptElement;
@@ -45,7 +45,7 @@ describe('MathRenderer', () => {
 
     expect(await screen.findByTestId('loaded-math')).toHaveTextContent('loaded');
 
-    render(<MathRenderer displayMode={false} style={{}} tex="z" />);
+    render(<MathRenderer displayMode={false} tex="z" />);
     expect(document.head.querySelectorAll('link#airgate-playground-katex-css')).toHaveLength(1);
     expect(document.head.querySelectorAll('script#airgate-playground-katex-js')).toHaveLength(1);
   });
@@ -53,7 +53,7 @@ describe('MathRenderer', () => {
   it('keeps fallback text and removes the script when loading fails', async () => {
     const MathRenderer = await loadMathRenderer();
 
-    render(<MathRenderer displayMode={false} style={{}} tex="bad" />);
+    render(<MathRenderer displayMode={false} tex="bad" />);
     const script = document.head.querySelector('script#airgate-playground-katex-js') as HTMLScriptElement;
     fireEvent.error(script);
 
@@ -67,7 +67,7 @@ describe('MathRenderer', () => {
     const MathRenderer = await loadMathRenderer();
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    const { unmount } = render(<MathRenderer displayMode={false} style={{}} tex="gone" />);
+    const { unmount } = render(<MathRenderer displayMode={false} tex="gone" />);
     const script = document.head.querySelector('script#airgate-playground-katex-js') as HTMLScriptElement;
     unmount();
     window.katex = { renderToString: vi.fn().mockReturnValue('<span>late</span>') };
@@ -80,7 +80,7 @@ describe('MathRenderer', () => {
   it('recovers when a script loads without initializing KaTeX', async () => {
     const MathRenderer = await loadMathRenderer();
 
-    render(<MathRenderer displayMode={false} style={{}} tex="missing" />);
+    render(<MathRenderer displayMode={false} tex="missing" />);
     const script = document.head.querySelector('script#airgate-playground-katex-js') as HTMLScriptElement;
     fireEvent.load(script);
 

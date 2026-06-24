@@ -34,7 +34,6 @@ vi.mock('react-i18next', () => ({
 }));
 
 let latest: PlaygroundContextValue;
-let lastSelectValue = '';
 
 function conversation(overrides: Partial<Conversation> = {}): Conversation {
   return {
@@ -115,15 +114,6 @@ function Harness() {
         onPaste={ctx.handlePaste}
         onKeyDown={ctx.handleKeyDown}
       />
-      {ctx.renderNativeSelect({
-        id: 'native',
-        value: 'a',
-        options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }],
-        onChange: value => {
-          lastSelectValue = value;
-        },
-        ariaLabel: 'Native select',
-      })}
       <button type="button" onClick={ctx.createConversation}>create</button>
       <button type="button" onClick={() => ctx.openConversation(1)}>open-one</button>
       <button type="button" onClick={() => { void ctx.deleteConversation(ctx.activeId ?? 1); }}>delete-active</button>
@@ -176,7 +166,6 @@ async function waitForBoot() {
 
 describe('PlaygroundContext', () => {
   beforeEach(() => {
-    lastSelectValue = '';
     vi.useRealTimers();
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
@@ -252,8 +241,6 @@ describe('PlaygroundContext', () => {
     act(() => media.dispatch(false));
     expect(screen.getByTestId('mobile')).toHaveTextContent('false');
 
-    fireEvent.change(screen.getByLabelText('Native select'), { target: { value: 'b' } });
-    expect(lastSelectValue).toBe('b');
   });
 
   it('clears invalid stored active conversations and tolerates boot failures', async () => {

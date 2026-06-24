@@ -1,8 +1,8 @@
 import { Children, Suspense, cloneElement, isValidElement, lazy, useState, type ReactNode } from 'react';
 import type { MessageContentOptions, PreviewImage } from './types';
-import { styles } from './styles';
 import { isSafeImageUrl, isSafeLinkUrl } from './utils';
 import { IMAGE_MARKDOWN_ITEM_RE } from './constants';
+import styles from './Playground.module.css';
 
 const MathRenderer = lazy(() => import('../MathRenderer'));
 
@@ -24,9 +24,9 @@ export function GeneratedImageFrame({ url, alt, options, imageIndex }: {
   const [dimensions, setDimensions] = useState('');
   const imageNode = (
     <img
+      className={styles.generatedImage}
       src={url}
       alt={alt}
-      style={styles.generatedImage}
       loading="lazy"
       onLoad={e => {
         const img = e.currentTarget;
@@ -40,7 +40,7 @@ export function GeneratedImageFrame({ url, alt, options, imageIndex }: {
   const previewableImage = options.onImagePreview ? (
     <button
       type="button"
-      style={styles.generatedImagePreviewBtn}
+      className={styles.generatedImageButton}
       title={previewTitle}
       aria-label={previewTitle}
       onClick={() => options.onImagePreview?.(url, alt, imageIndex)}
@@ -50,9 +50,9 @@ export function GeneratedImageFrame({ url, alt, options, imageIndex }: {
   ) : imageNode;
 
   return (
-    <span style={styles.generatedImageFrame}>
+    <span className={styles.generatedImageFrame}>
       {previewableImage}
-      {dimensions && <span style={styles.generatedImageDimensions}>{dimensions}</span>}
+      {dimensions && <span className={styles.generatedImageDimensions}>{dimensions}</span>}
     </span>
   );
 }
@@ -85,14 +85,14 @@ export function renderInlineMarkdown(text: string, keyPrefix: string, options: M
     const italicText = match[11] || match[12];
 
     if (inlineCode) {
-      nodes.push(<code key={key} style={styles.markdownInlineCode}>{inlineCode}</code>);
+      nodes.push(<code key={key}>{inlineCode}</code>);
     } else if (parenMath || dollarMath) {
       nodes.push(renderMath(parenMath || dollarMath, key, false));
     } else if (imageUrl && isSafeImageUrl(imageUrl)) {
       nodes.push(renderGeneratedImage(key, imageUrl, imageAlt || options.generatedImageAlt || 'Generated image', options));
     } else if (linkUrl && isSafeLinkUrl(linkUrl)) {
       nodes.push(
-        <a key={key} href={linkUrl} style={styles.markdownLink} target="_blank" rel="noreferrer">
+        <a key={key} href={linkUrl} target="_blank" rel="noreferrer">
           {renderInlineMarkdown(linkText, `${key}-link`, options)}
         </a>,
       );
@@ -116,21 +116,20 @@ export function renderInlineMarkdown(text: string, keyPrefix: string, options: M
 
 function renderMath(tex: string, key: string, displayMode: boolean) {
   const Tag = displayMode ? 'div' : 'span';
-  const style = displayMode ? styles.markdownBlockMath : styles.markdownInlineMath;
-  const fallback = <Tag style={style}>{tex}</Tag>;
+  const fallback = <Tag>{tex}</Tag>;
   return (
     <Suspense key={key} fallback={fallback}>
-      <MathRenderer displayMode={displayMode} style={style} tex={tex} />
+      <MathRenderer displayMode={displayMode} tex={tex} />
     </Suspense>
   );
 }
 
 function renderHeading(level: number, text: string, key: string, options: MessageContentOptions = {}) {
   const content = renderInlineMarkdown(text, `${key}-inline`, options);
-  if (level === 1) return <h1 key={key} style={styles.markdownH1}>{content}</h1>;
-  if (level === 2) return <h2 key={key} style={styles.markdownH2}>{content}</h2>;
-  if (level === 3) return <h3 key={key} style={styles.markdownH3}>{content}</h3>;
-  return <h4 key={key} style={styles.markdownH4}>{content}</h4>;
+  if (level === 1) return <h1 key={key}>{content}</h1>;
+  if (level === 2) return <h2 key={key}>{content}</h2>;
+  if (level === 3) return <h3 key={key}>{content}</h3>;
+  return <h4 key={key}>{content}</h4>;
 }
 
 export function renderImageGroup(text: string, key: string, options: MessageContentOptions = {}) {
@@ -157,7 +156,7 @@ export function parseImageGroupImages(text: string) {
 
 export function renderImageGallery(images: Array<{ alt: string; url: string }>, key: string, options: MessageContentOptions = {}) {
   return (
-    <div key={key} style={styles.imageGroup}>
+    <div key={key} className={styles.generatedImageGroup}>
       {images.map((image, index) => renderGeneratedImage(`${key}-${index}`, image.url, image.alt || options.generatedImageAlt || 'Generated image', options))}
     </div>
   );
@@ -238,7 +237,7 @@ export function renderMessageContent(content: string, options: MessageContentOpt
     } else {
       flushPendingImageGroup();
       const key = nextKey('p');
-      nodes.push(<p key={key} style={styles.markdownParagraph}>{renderInlineMarkdown(text, key, renderOptions)}</p>);
+      nodes.push(<p key={key}>{renderInlineMarkdown(text, key, renderOptions)}</p>);
     }
     paragraph = [];
   };
@@ -246,7 +245,7 @@ export function renderMessageContent(content: string, options: MessageContentOpt
     if (!quote.length) return;
     flushPendingImageGroup();
     const key = nextKey('quote');
-    nodes.push(<blockquote key={key} style={styles.markdownBlockquote}>{renderInlineMarkdown(quote.join('\n'), key, renderOptions)}</blockquote>);
+    nodes.push(<blockquote key={key}>{renderInlineMarkdown(quote.join('\n'), key, renderOptions)}</blockquote>);
     quote = [];
   };
   const flushList = () => {
@@ -254,9 +253,9 @@ export function renderMessageContent(content: string, options: MessageContentOpt
     flushPendingImageGroup();
     const key = nextKey('list');
     const children = listItems.map((item, index) => (
-      <li key={`${key}-${index}`} style={styles.markdownListItem}>{renderInlineMarkdown(item.text, `${key}-${index}`, renderOptions)}</li>
+      <li key={`${key}-${index}`}>{renderInlineMarkdown(item.text, `${key}-${index}`, renderOptions)}</li>
     ));
-    nodes.push(listItems[0].ordered ? <ol key={key} style={styles.markdownList}>{children}</ol> : <ul key={key} style={styles.markdownList}>{children}</ul>);
+    nodes.push(listItems[0].ordered ? <ol key={key}>{children}</ol> : <ul key={key}>{children}</ul>);
     listItems = [];
   };
   const flushBlocks = () => {
@@ -271,7 +270,7 @@ export function renderMessageContent(content: string, options: MessageContentOpt
   const flushCodeBlock = () => {
     flushPendingImageGroup();
     const key = nextKey('code');
-    nodes.push(<pre key={key} style={styles.markdownCodeBlock}><code>{codeLines.join('\n')}</code></pre>);
+    nodes.push(<pre key={key}><code>{codeLines.join('\n')}</code></pre>);
     codeLines = [];
   };
   const flushMathBlock = () => {
@@ -353,7 +352,7 @@ export function renderMessageContent(content: string, options: MessageContentOpt
 
     if (/^\s*([-*_])\s*(\1\s*){2,}$/.test(line)) {
       flushAllBlocks();
-      nodes.push(<hr key={nextKey('hr')} style={styles.markdownDivider} />);
+      nodes.push(<hr key={nextKey('hr')} />);
       continue;
     }
 

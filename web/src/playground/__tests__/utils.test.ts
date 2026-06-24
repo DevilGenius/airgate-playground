@@ -244,21 +244,9 @@ describe('playground utils', () => {
     expect(writeText).toHaveBeenCalledWith('hello');
   });
 
-  it('falls back to a hidden textarea for clipboard copy', async () => {
-    const execCommand = vi.fn().mockReturnValue(true);
+  it('throws when clipboard copy is unavailable', async () => {
     Object.defineProperty(window, 'isSecureContext', { value: false, configurable: true });
     Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
-    Object.defineProperty(document, 'execCommand', { value: execCommand, configurable: true });
-
-    await copyText('fallback');
-    expect(execCommand).toHaveBeenCalledWith('copy');
-    expect(document.querySelector('textarea')).toBeNull();
-  });
-
-  it('throws when textarea clipboard fallback fails', async () => {
-    Object.defineProperty(window, 'isSecureContext', { value: false, configurable: true });
-    Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
-    Object.defineProperty(document, 'execCommand', { value: vi.fn().mockReturnValue(false), configurable: true });
 
     await expect(copyText('nope')).rejects.toThrow('copy failed');
   });

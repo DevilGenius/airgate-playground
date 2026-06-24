@@ -1,6 +1,5 @@
-import { cssVar } from '@devilgenius/airgate-theme';
 import { usePlayground } from './PlaygroundContext';
-import { styles } from './styles';
+import styles from './Playground.module.css';
 
 export function ConversationSidebar() {
   const {
@@ -14,21 +13,19 @@ export function ConversationSidebar() {
 
   return (
     <aside
-      style={styles.sidebar}
-      className="pg-sidebar"
+      className={styles.conversationSidebar}
       aria-label={t('playground.conversations', { defaultValue: 'Conversations' })}
     >
-      <div style={styles.sidebarHeader}>
-        <div style={styles.sidebarTopbar}>
+      <div className={styles.sidebarHeader}>
+        <div className={styles.sidebarTopbar}>
           <button
             type="button"
-            style={styles.newBtn}
-            className="pg-sidebar-action"
+            className={styles.newConversationButton}
             onClick={createConversation}
             title={t('playground.new_conversation')}
             aria-label={t('playground.new_conversation')}
           >
-            <span style={styles.newBtnIcon}>
+            <span className={styles.buttonIcon}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
                 <path d="M7 1v12M1 7h12" />
               </svg>
@@ -38,35 +35,33 @@ export function ConversationSidebar() {
         </div>
       </div>
 
-      <div style={styles.convList} className="pg-scrollbar">
+      <div className={`${styles.conversationList} ${styles.scrollbar}`}>
         {sidebarConversations.map(conversation => {
           const isActive = conversation.id === activeId;
           return (
             <div
               key={conversation.id}
-              className={`pg-conv-item${isActive ? ' is-active' : ''}`}
-              style={styles.convItem}
+              className={`${styles.conversationItem} ${isActive ? styles.conversationItemActive : ''}`}
+              aria-current={isActive ? 'page' : undefined}
             >
               <button
                 type="button"
-                className="pg-conv-open"
-                style={styles.convOpenBtn}
+                className={styles.conversationOpenButton}
                 onClick={() => openConversation(conversation.id)}
                 title={conversation.title || t('playground.new_conversation')}
               >
-                <span style={{ ...styles.convIcon, color: isActive ? cssVar('text') : cssVar('textTertiary') }}>
+                <span className={styles.conversationIcon}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
                   </svg>
                 </span>
-                <span style={{ ...styles.convTitle, color: isActive ? cssVar('text') : cssVar('textSecondary'), fontWeight: isActive ? 500 : 400 }}>
+                <span className={styles.conversationTitle}>
                   {conversation.title || t('playground.new_conversation')}
                 </span>
               </button>
               <button
                 type="button"
-                className="pg-conv-delete"
-                style={styles.deleteBtn}
+                className={styles.deleteConversationButton}
                 onClick={(event) => { event.stopPropagation(); void deleteConversation(conversation.id); }}
                 title={t('playground.delete_conversation')}
                 aria-label={t('playground.delete_conversation')}
@@ -80,7 +75,7 @@ export function ConversationSidebar() {
         })}
 
         {sidebarConversations.length === 0 && (
-          <div style={styles.emptyConvList}><span>{t('playground.no_conversations')}</span></div>
+          <div className={styles.emptyConversations}><span>{t('playground.no_conversations')}</span></div>
         )}
       </div>
     </aside>

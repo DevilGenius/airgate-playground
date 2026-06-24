@@ -1,8 +1,7 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MathRendererProps {
   displayMode: boolean;
-  style: CSSProperties;
   tex: string;
 }
 
@@ -78,7 +77,7 @@ function loadKatex() {
   return katexPromise;
 }
 
-export default function MathRenderer({ displayMode, style, tex }: MathRendererProps) {
+export default function MathRenderer({ displayMode, tex }: MathRendererProps) {
   const [html, setHtml] = useState<string | null>(null);
 
   useEffect(() => {
@@ -107,6 +106,6 @@ export default function MathRenderer({ displayMode, style, tex }: MathRendererPr
   }, [displayMode, tex]);
 
   const Tag = displayMode ? 'div' : 'span';
-  if (html == null) return <Tag style={style}>{tex}</Tag>;
-  return <Tag style={style} dangerouslySetInnerHTML={{ __html: html }} />;
+  if (html == null) return <Tag>{tex}</Tag>;
+  return <Tag dangerouslySetInnerHTML={{ __html: html }} />;
 }

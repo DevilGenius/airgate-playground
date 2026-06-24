@@ -1,0 +1,1479 @@
+.playgroundShell {
+  --pg-bg: var(--ag-bg, oklch(12% 0 0));
+  --pg-surface: var(--ag-bg-elevated, oklch(21.03% 0 0));
+  --pg-hover: var(--ag-bg-hover, oklch(25.7% 0 0));
+  --pg-active: var(--ag-bg-active, var(--pg-hover));
+  --pg-field: var(--ag-field-background, var(--pg-surface));
+  --pg-field-fg: var(--ag-field-foreground, var(--ag-text, oklch(99.11% 0 0)));
+  --pg-placeholder: var(--ag-field-placeholder, var(--ag-text-tertiary, oklch(70.5% 0 0)));
+  --pg-border: var(--ag-border, oklch(28% 0 0));
+  --pg-border-focus: var(--ag-border-focus, var(--ag-primary, oklch(98.48% 0 0)));
+  --pg-text: var(--ag-text, oklch(99.11% 0 0));
+  --pg-text-secondary: var(--ag-text-secondary, oklch(70.5% 0 0));
+  --pg-text-tertiary: var(--ag-text-tertiary, oklch(70.5% 0 0));
+  --pg-primary: var(--ag-primary, oklch(98.48% 0 0));
+  --pg-primary-fg: var(--ag-primary-foreground, oklch(15% 0 0));
+  --pg-primary-subtle: var(--ag-primary-subtle, color-mix(in oklab, var(--pg-primary) 10%, transparent));
+  --pg-danger: var(--ag-danger, oklch(57.3% 0.2249 21.97));
+  --pg-danger-fg: var(--ag-danger-foreground, white);
+  --pg-danger-subtle: var(--ag-danger-subtle, color-mix(in oklab, var(--pg-danger) 12%, transparent));
+  --pg-info: var(--ag-info, var(--pg-primary));
+  --pg-info-subtle: var(--ag-info-subtle, color-mix(in oklab, var(--pg-info) 12%, transparent));
+  --pg-scrollbar: var(--ag-scrollbar, var(--pg-text-tertiary));
+  --pg-shadow-sm: var(--ag-shadow-sm, 0 0 0 0 transparent);
+  --pg-shadow-md: var(--ag-shadow-md, 0 16px 50px rgba(0, 0, 0, 0.28));
+  --pg-radius: var(--ag-field-radius, 0.5rem);
+  --pg-sidebar-width: 320px;
+  --pg-chat-max-w: 68rem;
+  --pg-control-height: 40px;
+
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  max-height: 100dvh;
+  overflow: hidden;
+  background: var(--pg-bg);
+  color: var(--pg-text);
+  font-family:
+    var(--ag-font-sans, Inter),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-feature-settings: "cv11" on, "ss01" on;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.playgroundShell *,
+.playgroundShell *::before,
+.playgroundShell *::after {
+  box-sizing: border-box;
+}
+
+.playgroundShell ::selection {
+  background: var(--pg-primary-subtle);
+  color: var(--pg-text);
+}
+
+.mainPane {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--pg-bg);
+}
+
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pg-scrollbar) transparent;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--pg-scrollbar);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: content-box;
+}
+
+.conversationSidebar {
+  display: flex;
+  flex: 0 0 var(--pg-sidebar-width);
+  flex-direction: column;
+  width: var(--pg-sidebar-width);
+  min-width: var(--pg-sidebar-width);
+  max-width: var(--pg-sidebar-width);
+  min-height: 0;
+  background: var(--pg-bg);
+  border-right: 1px solid color-mix(in oklab, var(--pg-border) 28%, transparent);
+}
+
+.sidebarHeader {
+  flex: 0 0 auto;
+  padding: 12px 8px 8px;
+}
+
+.sidebarTopbar {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 36px;
+}
+
+.newConversationButton,
+.conversationOpenButton,
+.tabNewButton,
+.tabOpenButton,
+.tabCloseButton,
+.iconButton,
+.inlineActionButton,
+.sendButton,
+.stopButton,
+.selectTrigger,
+.emptyButton,
+.previewCloseButton,
+.previewNavButton {
+  font: inherit;
+}
+
+.newConversationButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  gap: 8px;
+  min-width: 0;
+  min-height: 36px;
+  border: 0;
+  border-radius: var(--pg-radius);
+  background: transparent;
+  color: var(--pg-text);
+  cursor: pointer;
+  padding: 8px 8px 8px 10px;
+  font-size: 14px;
+  line-height: 20px;
+  transition:
+    background-color 80ms ease,
+    color 80ms ease;
+}
+
+.newConversationButton:hover {
+  background: var(--pg-hover);
+}
+
+.buttonIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.conversationList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 8px 12px;
+}
+
+.conversationItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 36px;
+  margin: 2px 0;
+  border-radius: var(--pg-radius);
+  background: transparent;
+  color: var(--pg-text-secondary);
+  padding: 8px 8px 8px 10px;
+  transition:
+    background-color 80ms ease,
+    color 80ms ease;
+}
+
+.conversationItem:hover,
+.conversationItem:focus-within {
+  background: var(--pg-hover);
+  color: var(--pg-text);
+}
+
+.conversationItemActive {
+  background: var(--pg-active);
+  color: var(--pg-text);
+}
+
+.conversationOpenButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.conversationIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: var(--pg-text-tertiary);
+}
+
+.conversationItemActive .conversationIcon {
+  color: var(--pg-text);
+}
+
+.conversationTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.conversationItemActive .conversationTitle {
+  font-weight: 560;
+}
+
+.deleteConversationButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pg-text-tertiary);
+  cursor: pointer;
+  opacity: 0;
+  padding: 0;
+  transition:
+    opacity 80ms ease,
+    background-color 80ms ease,
+    color 80ms ease;
+}
+
+.conversationItem:hover .deleteConversationButton,
+.conversationItem:focus-within .deleteConversationButton {
+  opacity: 1;
+}
+
+.deleteConversationButton:hover {
+  background: var(--pg-danger-subtle);
+  color: var(--pg-danger);
+}
+
+.emptyConversations {
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px;
+  color: var(--pg-text-tertiary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.conversationTabs {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: 48px;
+  border-bottom: 1px solid color-mix(in oklab, var(--pg-border) 28%, transparent);
+  background: var(--pg-bg);
+  padding: 7px 10px;
+}
+
+.tabNewButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--pg-border);
+  border-radius: var(--pg-radius);
+  background: var(--pg-field);
+  color: var(--pg-text);
+  cursor: pointer;
+}
+
+.tabList {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.tabList::-webkit-scrollbar {
+  display: none;
+}
+
+.tabItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  min-width: 92px;
+  max-width: 180px;
+  height: 34px;
+  border: 1px solid transparent;
+  border-radius: var(--pg-radius);
+  background: transparent;
+  color: var(--pg-text-secondary);
+  padding: 0 4px 0 11px;
+}
+
+.tabItemActive {
+  border-color: var(--pg-border);
+  background: var(--pg-hover);
+  color: var(--pg-text);
+}
+
+.tabOpenButton {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.tabCloseButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pg-text-tertiary);
+  cursor: pointer;
+  padding: 0;
+}
+
+.tabCloseButton:hover {
+  background: var(--pg-danger-subtle);
+  color: var(--pg-danger);
+}
+
+.emptyTabs {
+  color: var(--pg-text-tertiary);
+  font-size: 12px;
+  white-space: nowrap;
+  padding: 0 8px;
+}
+
+.chatView {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--pg-bg);
+}
+
+.messagesArea {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--pg-bg);
+}
+
+.messagesInner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--pg-chat-max-w);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 12px 0 18px;
+}
+
+.emptyState {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 24px 120px;
+  text-align: center;
+}
+
+.emptyLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 76%, transparent);
+  border-radius: 999px;
+  background: var(--pg-field);
+  color: var(--pg-text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.emptyTitle {
+  color: var(--pg-text);
+  font-size: 28px;
+  font-weight: 620;
+  line-height: 36px;
+}
+
+.emptyDescription {
+  color: var(--pg-text-tertiary);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.emptyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--pg-primary);
+  color: var(--pg-primary-fg);
+  cursor: pointer;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.messageRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px 14px;
+}
+
+.messageRowUser {
+  justify-content: flex-end;
+}
+
+.messageRowAssistant {
+  justify-content: flex-start;
+}
+
+.messageStack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  max-width: min(80%, 64rem);
+}
+
+.messageStackUser {
+  align-items: flex-end;
+}
+
+.messageStackAssistant {
+  align-items: flex-start;
+  flex: 1;
+  max-width: min(calc(100% - 2.5rem), 64rem);
+}
+
+.messageBubble {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.userBubble {
+  border-radius: 18px 18px 4px 18px;
+  background: var(--pg-primary);
+  color: var(--pg-primary-fg);
+  box-shadow: var(--pg-shadow-sm);
+  padding: 12px 16px;
+}
+
+.assistantBlock {
+  width: 100%;
+  background: transparent;
+  color: var(--pg-text);
+  padding: 6px 2px;
+}
+
+.messageContent {
+  color: inherit;
+  font-size: 15px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.messageContent :where(p) {
+  margin: 0 0 11px;
+}
+
+.messageContent :where(p:last-child) {
+  margin-bottom: 0;
+}
+
+.messageContent :where(h1, h2, h3, h4) {
+  color: var(--pg-text);
+  letter-spacing: 0;
+}
+
+.messageContent :where(h1) {
+  margin: 4px 0 14px;
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.messageContent :where(h2) {
+  margin: 18px 0 10px;
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.messageContent :where(h3, h4) {
+  margin: 14px 0 8px;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.messageContent :where(ul, ol) {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.messageContent :where(li) {
+  margin: 4px 0;
+}
+
+.messageContent :where(blockquote) {
+  margin: 0 0 12px;
+  border-left: 3px solid currentColor;
+  padding: 9px 13px;
+  color: inherit;
+  opacity: 0.86;
+}
+
+.messageContent :where(pre) {
+  margin: 4px 0 14px;
+  overflow-x: auto;
+  border: 1px solid var(--pg-border);
+  border-radius: var(--pg-radius);
+  background: var(--pg-surface);
+  padding: 13px 15px;
+  color: var(--pg-text);
+  font-family: var(--ag-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+  font-size: 12.5px;
+  line-height: 1.72;
+}
+
+.messageContent :where(:not(pre) > code) {
+  border: 1px solid color-mix(in oklab, var(--pg-border) 70%, transparent);
+  border-radius: 6px;
+  background: var(--pg-hover);
+  padding: 1px 5px 2px;
+  font-family: var(--ag-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+  font-size: 0.9em;
+}
+
+.messageContent :where(a) {
+  color: var(--pg-info);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.messageContent :where(hr) {
+  height: 1px;
+  border: 0;
+  background: color-mix(in oklab, var(--pg-border) 72%, transparent);
+  margin: 16px 0;
+}
+
+.reasoningBox {
+  margin-bottom: 10px;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 62%, transparent);
+  border-radius: var(--pg-radius);
+  background: color-mix(in oklab, var(--pg-hover) 24%, transparent);
+  padding: 10px 12px;
+}
+
+.reasoningSummary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pg-text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 18px;
+  user-select: none;
+}
+
+.reasoningContent {
+  margin-top: 8px;
+  color: var(--pg-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.messageFooter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  margin-top: 2px;
+}
+
+.messageActions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.messageActionsLeft {
+  justify-content: flex-start;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--pg-radius);
+  background: transparent;
+  color: var(--pg-text-tertiary);
+  cursor: pointer;
+  padding: 0;
+}
+
+.copyButton:hover {
+  background: var(--pg-hover);
+  color: var(--pg-text);
+}
+
+.metaBadge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  min-height: 28px;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 70%, transparent);
+  border-radius: var(--pg-radius);
+  background: var(--pg-field);
+  color: var(--pg-text-secondary);
+  padding: 0 8px;
+  font-family: var(--ag-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+  font-size: 11px;
+  line-height: 26px;
+}
+
+.streamingMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--pg-text-tertiary);
+  font-size: 11px;
+}
+
+.streamingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--pg-primary);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.thinkingText {
+  opacity: 0.55;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.noticeBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: calc(100% - 28px);
+  max-width: 44.35rem;
+  margin: 8px auto;
+  border: 1px solid color-mix(in oklab, var(--pg-danger) 28%, transparent);
+  border-radius: var(--pg-radius);
+  background: var(--pg-danger-subtle);
+  color: var(--pg-danger);
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.recoverableBar {
+  border-color: color-mix(in oklab, var(--pg-info) 22%, transparent);
+  background: var(--pg-info-subtle);
+  color: var(--pg-info);
+}
+
+.noticeText {
+  flex: 1;
+  min-width: 0;
+}
+
+.inlineActionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 30px;
+  border: 1px solid color-mix(in oklab, currentColor 26%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, currentColor 10%, transparent);
+  color: inherit;
+  cursor: pointer;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.interactionNotice {
+  position: sticky;
+  bottom: 12px;
+  align-self: center;
+  z-index: 4;
+  border: 1px solid var(--pg-border);
+  border-radius: 999px;
+  background: var(--pg-surface);
+  color: var(--pg-text-secondary);
+  box-shadow: var(--pg-shadow-sm);
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.composerDock {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  padding: 0 0 calc(env(safe-area-inset-bottom, 0px) + 16px);
+}
+
+.composerRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: var(--pg-chat-max-w);
+  margin: 0 auto;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 58%, transparent);
+  border-radius: 26px;
+  background: var(--pg-field);
+  box-shadow: var(--pg-shadow-sm);
+  padding: 8px 12px;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 200ms ease;
+}
+
+.composerRoot:focus-within {
+  border-color: color-mix(in oklab, var(--pg-primary) 18%, var(--pg-border) 82%);
+  box-shadow:
+    var(--pg-shadow-sm),
+    0 0 0 1px color-mix(in oklab, var(--pg-primary) 8%, transparent);
+}
+
+.composerRootStreaming {
+  border-color: color-mix(in oklab, var(--pg-border) 76%, transparent);
+}
+
+.pendingImageList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+  padding: 2px 4px 4px;
+}
+
+.pendingImageItem {
+  position: relative;
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 82%, transparent);
+  border-radius: var(--pg-radius);
+  background: color-mix(in oklab, var(--pg-hover) 30%, transparent);
+  overflow: visible;
+}
+
+.pendingImageItemDisabled {
+  opacity: 0.62;
+}
+
+.pendingImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--pg-radius) - 1px);
+  object-fit: cover;
+}
+
+.removeImageButton {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 66%, transparent);
+  border-radius: 999px;
+  background: var(--pg-surface);
+  color: var(--pg-text-secondary);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  padding: 0;
+}
+
+.removeImageButton:hover {
+  background: var(--pg-hover);
+  color: var(--pg-text);
+}
+
+.fileInput {
+  display: none;
+}
+
+.composerTextarea {
+  display: block;
+  appearance: none;
+  width: 100%;
+  height: 112px;
+  min-height: 112px;
+  max-height: 112px;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--pg-field-fg);
+  resize: none;
+  padding: 6px 4px 2px;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-y: auto;
+}
+
+.composerTextarea:focus,
+.composerTextarea:focus-visible {
+  border: 0;
+  outline: 0;
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+:global(#root) .playgroundShell .composerTextarea:focus-visible {
+  outline: 0;
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.composerTextarea::placeholder {
+  color: var(--pg-placeholder);
+}
+
+.composerToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 2px 0 0;
+}
+
+.composerToolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  overflow: visible;
+}
+
+.selectGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.selectPicker {
+  position: relative;
+  z-index: 30;
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.selectTrigger {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) 12px;
+  align-items: center;
+  justify-content: stretch;
+  gap: 7px;
+  width: auto;
+  max-width: 100%;
+  height: var(--pg-control-height);
+  min-height: var(--pg-control-height);
+  min-width: auto;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--pg-primary) 24%, var(--pg-border));
+  border-radius: var(--pg-radius);
+  background: var(--pg-primary-subtle);
+  color: var(--pg-primary);
+  box-shadow: var(--pg-shadow-sm);
+  cursor: pointer;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease,
+    color 80ms ease;
+  white-space: nowrap;
+}
+
+.selectTrigger > span {
+  grid-column: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.selectTrigger > svg {
+  flex: 0 0 auto;
+  grid-column: 2;
+}
+
+.selectTrigger:hover {
+  border-color: color-mix(in oklab, var(--pg-primary) 38%, var(--pg-border) 62%);
+  background: color-mix(in oklab, var(--pg-primary) 12%, var(--pg-surface) 88%);
+  color: var(--pg-primary);
+}
+
+.modelSelect {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.modelSelect .selectTrigger {
+  width: auto;
+  max-width: none;
+}
+
+.modelSelect .selectTrigger > span {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.reasoningSelect {
+  width: 112px;
+  min-width: 112px;
+  max-width: 112px;
+}
+
+.reasoningSelect .selectTrigger {
+  width: 100%;
+}
+
+.selectMenu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 100;
+  width: min(280px, 80vw);
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid color-mix(in oklab, var(--pg-border) 64%, transparent);
+  border-radius: 12px;
+  background: var(--pg-field);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+  padding: 6px;
+}
+
+.selectMenu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 34px;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--pg-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  padding: 0 8px;
+  text-align: left;
+}
+
+.selectMenu button:hover,
+.selectMenu .selectOptionActive {
+  background: var(--pg-hover);
+}
+
+.composerToolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: auto;
+  min-height: var(--pg-control-height);
+  height: var(--pg-control-height);
+  border: 1px solid color-mix(in oklab, var(--pg-border) 54%, transparent);
+  border-radius: var(--pg-radius);
+  background: var(--pg-field);
+  color: var(--pg-text-secondary);
+  box-shadow: var(--pg-shadow-sm);
+  cursor: pointer;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease,
+    color 80ms ease;
+}
+
+.iconButton:hover {
+  background: var(--pg-hover);
+  color: var(--pg-text);
+}
+
+.iconButton:disabled,
+.removeImageButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.iconButtonActive {
+  border-color: color-mix(in oklab, var(--pg-primary) 24%, var(--pg-border));
+  background: var(--pg-primary-subtle);
+  color: var(--pg-primary);
+}
+
+.sendButton,
+.stopButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--pg-control-height);
+  height: var(--pg-control-height);
+  min-width: var(--pg-control-height);
+  min-height: var(--pg-control-height);
+  border: 0;
+  border-radius: var(--pg-radius);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background-color 150ms ease,
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.sendButton {
+  background: var(--pg-primary);
+  color: var(--pg-primary-fg);
+}
+
+.sendButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.stopButton {
+  background: var(--pg-danger);
+  color: var(--pg-danger-fg);
+}
+
+.generatedImageGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 100%;
+  margin: 10px 0 6px;
+}
+
+.generatedImageFrame {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 180px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: min(100%, 320px);
+  min-width: 0;
+}
+
+.generatedImageButton {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  padding: 0;
+  text-align: left;
+}
+
+.generatedImage {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  height: auto;
+  border: 1px solid var(--pg-border);
+  border-radius: var(--pg-radius);
+  object-fit: contain;
+}
+
+.generatedImageDimensions {
+  display: block;
+  width: 100%;
+  color: var(--pg-text-tertiary);
+  font-family: var(--ag-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+  font-size: 11px;
+  text-align: center;
+}
+
+.previewOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.82);
+  padding: 40px;
+}
+
+.previewModal {
+  position: relative;
+  display: flex;
+  max-width: min(94vw, 1120px);
+  max-height: 90vh;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.previewImage {
+  display: block;
+  width: auto;
+  max-width: min(94vw, 1120px);
+  height: auto;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.previewNavButton,
+.previewCloseButton {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.previewNavButton {
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 34px;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.previewNavPrevious {
+  left: 12px;
+}
+
+.previewNavNext {
+  right: 12px;
+}
+
+.previewCounter {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.previewCloseButton {
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.newConversationButton:focus-visible,
+.conversationOpenButton:focus-visible,
+.deleteConversationButton:focus-visible,
+.tabNewButton:focus-visible,
+.tabOpenButton:focus-visible,
+.tabCloseButton:focus-visible,
+.copyButton:focus-visible,
+.inlineActionButton:focus-visible,
+.iconButton:focus-visible,
+.sendButton:focus-visible,
+.stopButton:focus-visible,
+.selectTrigger:focus-visible,
+.emptyButton:focus-visible,
+.generatedImageButton:focus-visible,
+.previewCloseButton:focus-visible,
+.previewNavButton:focus-visible {
+  outline: 1.5px solid var(--pg-border-focus);
+  outline-offset: 2px;
+}
+
+:global(#root) .playgroundShell .selectTrigger:focus-visible {
+  outline: 1.5px solid var(--pg-border-focus);
+  outline-offset: 2px;
+  box-shadow: var(--pg-shadow-sm);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 960px) {
+  .playgroundShell {
+    display: block;
+    height: 100%;
+  }
+
+  .conversationSidebar {
+    display: none;
+  }
+
+  .mainPane {
+    height: 100%;
+  }
+
+  .conversationTabs {
+    display: flex;
+  }
+
+  .messagesInner {
+    padding-top: 6px;
+  }
+
+  .messageRow {
+    padding: 10px 8px;
+  }
+
+  .messageStack {
+    max-width: calc(100% - 28px);
+  }
+
+  .messageStackAssistant {
+    max-width: calc(100% - 8px);
+  }
+
+  .userBubble {
+    border-radius: 16px 16px 4px 16px;
+    padding: 10px 13px;
+  }
+
+  .emptyState {
+    gap: 12px;
+    padding: 32px 18px 96px;
+  }
+
+  .composerDock {
+    padding: 0 8px calc(env(safe-area-inset-bottom, 0px) + 10px);
+  }
+
+  .composerRoot {
+    max-width: 100%;
+    padding: 7px 10px;
+  }
+
+  .composerToolbar {
+    gap: 8px;
+  }
+
+  .composerToolbarLeft {
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .composerToolbarLeft::-webkit-scrollbar {
+    display: none;
+  }
+
+  .selectTrigger {
+    padding: 0 10px;
+  }
+
+  .modelSelect {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .reasoningSelect {
+    min-width: 96px;
+    max-width: 112px;
+  }
+
+  .iconButton {
+    min-width: 40px;
+    padding: 0 10px;
+  }
+
+  .generatedImageGroup {
+    gap: 8px;
+  }
+
+  .generatedImageFrame {
+    flex-basis: 140px;
+    max-width: min(100%, 240px);
+  }
+
+  .noticeBar {
+    width: auto;
+    max-width: none;
+    margin: 8px;
+  }
+
+  .previewOverlay {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 520px) {
+  .messageStack {
+    max-width: calc(100% - 18px);
+  }
+
+  .messageStackAssistant {
+    max-width: 100%;
+  }
+
+  .messageRow {
+    padding: 9px 8px;
+  }
+
+  .composerDock {
+    padding: 0 8px calc(env(safe-area-inset-bottom, 0px) + 8px);
+  }
+
+  .modelSelect {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .reasoningSelect {
+    min-width: 92px;
+    max-width: 108px;
+  }
+
+  .iconButton {
+    min-width: var(--pg-control-height);
+    padding: 0;
+  }
+
+  .composerToolbarLeft {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .composerToolbarLeft::-webkit-scrollbar {
+    display: none;
+  }
+
+  .selectGroup {
+    flex: 0 0 auto;
+  }
+
+  .iconButtonLabel {
+    display: none;
+  }
+}

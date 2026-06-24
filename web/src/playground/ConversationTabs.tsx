@@ -1,5 +1,5 @@
 import { usePlayground } from './PlaygroundContext';
-import { styles } from './styles';
+import styles from './Playground.module.css';
 
 export function ConversationTabs() {
   const {
@@ -13,13 +13,12 @@ export function ConversationTabs() {
 
   return (
     <div
-      style={styles.conversationTabs}
-      className="pg-conversation-tabs"
+      className={styles.conversationTabs}
       aria-label={t('playground.conversations', { defaultValue: 'Conversations' })}
     >
       <button
         type="button"
-        style={styles.tabsNewBtn}
+        className={styles.tabNewButton}
         onClick={createConversation}
         aria-label={t('playground.new_conversation')}
         title={t('playground.new_conversation')}
@@ -29,24 +28,20 @@ export function ConversationTabs() {
         </svg>
       </button>
 
-      <div style={styles.tabsScroller} role="tablist">
+      <div className={styles.tabList} role="tablist">
         {conversations.map(conversation => {
           const isActive = conversation.id === activeId;
           return (
             <div
               key={conversation.id}
               role="presentation"
-              style={{
-                ...styles.conversationTabItem,
-                ...(isActive ? styles.conversationTabItemActive : null),
-              }}
-              className="pg-conversation-tab"
+              className={`${styles.tabItem} ${isActive ? styles.tabItemActive : ''}`}
             >
               <button
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                style={styles.conversationTabOpen}
+                className={styles.tabOpenButton}
                 onClick={() => openConversation(conversation.id)}
                 title={conversation.title || t('playground.new_conversation')}
               >
@@ -54,7 +49,7 @@ export function ConversationTabs() {
               </button>
               <button
                 type="button"
-                style={styles.conversationTabClose}
+                className={styles.tabCloseButton}
                 onClick={() => { void deleteConversation(conversation.id); }}
                 aria-label={t('playground.delete_conversation')}
                 title={t('playground.delete_conversation')}
@@ -68,7 +63,7 @@ export function ConversationTabs() {
         })}
 
         {conversations.length === 0 && (
-          <div style={styles.emptyTabs}>{t('playground.no_conversations')}</div>
+          <div className={styles.emptyTabs}>{t('playground.no_conversations')}</div>
         )}
       </div>
     </div>

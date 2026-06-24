@@ -1,6 +1,91 @@
-import type { ReasoningEffort } from './types';
+import { useEffect, useRef, useState } from 'react';
+import type { ReasoningEffort, SelectOption } from './types';
 import { usePlayground } from './PlaygroundContext';
-import { styles } from './styles';
+import styles from './Playground.module.css';
+
+const REASONING_OPTIONS: SelectOption[] = [
+  { value: 'minimal', label: 'Minimal' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+  { value: 'xhigh', label: 'XHigh' },
+];
+
+function ComposerSelect({
+  value,
+  options,
+  onChange,
+  ariaLabel,
+  className,
+}: {
+  value: string;
+  options: SelectOption[];
+  onChange: (value: string) => void;
+  ariaLabel: string;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const selected = options.find(option => option.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (triggerRef.current?.contains(target)) return;
+      if (menuRef.current?.contains(target)) return;
+      setOpen(false);
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [open]);
+
+  const select = (nextValue: string) => {
+    onChange(nextValue);
+    setOpen(false);
+  };
+
+  return (
+    <div className={`${styles.selectPicker} ${className || ''}`}>
+      <button
+        ref={triggerRef}
+        type="button"
+        className={styles.selectTrigger}
+        onClick={() => setOpen(value => !value)}
+        onKeyDown={event => {
+          if (event.key === 'Escape') setOpen(false);
+        }}
+        aria-label={ariaLabel}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        title={selected?.label || value}
+      >
+        <span>{selected?.label || value}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+
+      {open && (
+        <div ref={menuRef} className={styles.selectMenu} role="listbox" aria-label={ariaLabel}>
+          {options.map(option => (
+            <button
+              key={option.value}
+              type="button"
+              role="option"
+              aria-selected={option.value === value}
+              className={option.value === value ? styles.selectOptionActive : ''}
+              onClick={() => select(option.value)}
+            >
+              <span>{option.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function InputArea() {
   const {
@@ -16,7 +101,6 @@ export function InputArea() {
     inputRef,
     fileInputRef,
     handleImageChange,
-    renderNativeSelect,
     selectedModel,
     modelOptions,
     setSelectedModel,
@@ -33,25 +117,19 @@ export function InputArea() {
   } = usePlayground();
 
   return (
-    <div style={styles.inputArea}>
-      <div style={{
-        ...styles.inputWrapper,
-        ...(isActiveConversationStreaming ? styles.inputWrapperStreaming : null),
-      }} className="pg-input-wrapper">
+    <div className={styles.composerDock}>
+      <div className={`${styles.composerRoot} ${isActiveConversationStreaming ? styles.composerRootStreaming : ''}`}>
         {pendingImages.length > 0 && (
-          <div style={styles.imagePreviewList}>
+          <div className={styles.pendingImageList}>
             {pendingImages.map(image => (
               <div
                 key={image.id}
-                style={{
-                  ...styles.imagePreviewItem,
-                  ...(isActiveConversationStreaming ? { cursor: 'default', opacity: 0.6 } : null),
-                }}
+                className={`${styles.pendingImageItem} ${isActiveConversationStreaming ? styles.pendingImageItemDisabled : ''}`}
               >
-                <img src={image.url} alt={image.name} style={styles.imagePreview} />
+                <img className={styles.pendingImage} src={image.url} alt={image.name} />
                 <button
                   type="button"
-                  style={styles.removeImageBtn}
+                  className={styles.removeImageButton}
                   onClick={(event) => {
                     event.preventDefault();
                     event.stopPropagation();
@@ -60,7 +138,10 @@ export function InputArea() {
                   aria-label={`Remove ${image.name}`}
                   disabled={isActiveConversationStreaming}
                 >
-                  &times;
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
                 </button>
               </div>
             ))}
@@ -69,59 +150,53 @@ export function InputArea() {
 
         <textarea
           ref={inputRef}
-          style={styles.textarea}
+          className={styles.composerTextarea}
           value={input}
           onChange={event => setInput(event.target.value)}
           onPaste={handlePaste}
           onKeyDown={handleKeyDown}
           placeholder={t('playground.input_placeholder')}
-          rows={4}
+          rows={5}
           disabled={isActiveConversationStreaming}
         />
 
         <input
           ref={fileInputRef}
+          className={styles.fileInput}
           type="file"
           accept="image/*"
           multiple
-          style={styles.fileInput}
           onChange={handleImageChange}
           disabled={isActiveConversationStreaming}
         />
 
-        <div style={styles.inputActions}>
-          <div className="pg-selectors" style={styles.selectors}>
-            {renderNativeSelect({
-              id: 'model',
-              value: selectedModel,
-              options: modelOptions,
-              onChange: setSelectedModel,
-              ariaLabel: t('playground.model'),
-            })}
+        <div className={styles.composerToolbar}>
+          <div className={styles.composerToolbarLeft}>
+            <div className={styles.selectGroup}>
+              {selectedModelSupportsReasoning && (
+                <ComposerSelect
+                  className={styles.reasoningSelect}
+                  value={reasoningEffort}
+                  options={REASONING_OPTIONS}
+                  onChange={value => setReasoningEffort(value as ReasoningEffort)}
+                  ariaLabel="Reasoning effort"
+                />
+              )}
 
-            {selectedModelSupportsReasoning && renderNativeSelect({
-              id: 'reasoning-effort',
-              value: reasoningEffort,
-              options: [
-                { value: 'minimal', label: 'Minimal' },
-                { value: 'low', label: 'Low' },
-                { value: 'medium', label: 'Medium' },
-                { value: 'high', label: 'High' },
-                { value: 'xhigh', label: 'XHigh' },
-              ],
-              onChange: value => setReasoningEffort(value as ReasoningEffort),
-              ariaLabel: 'Reasoning effort',
-            })}
+              <ComposerSelect
+                className={styles.modelSelect}
+                value={selectedModel}
+                options={modelOptions}
+                onChange={setSelectedModel}
+                ariaLabel={t('playground.model')}
+              />
+            </div>
           </div>
 
-          <div style={styles.inputButtonGroup}>
+          <div className={styles.composerToolbarRight}>
             <button
               type="button"
-              className="pg-input-action"
-              style={{
-                ...styles.thinkingToggleBtn,
-                ...(thinkingVisible ? styles.thinkingToggleBtnActive : null),
-              }}
+              className={`${styles.iconButton} ${thinkingVisible ? styles.iconButtonActive : ''}`}
               onMouseDown={event => event.preventDefault()}
               onClick={() => setThinkingVisible(value => !value)}
               title={thinkingVisible
@@ -148,26 +223,26 @@ export function InputArea() {
                   <path d="M4 4l16 16" />
                 </svg>
               )}
-              <span className="pg-input-action-label">
+              <span className={styles.iconButtonLabel}>
                 {t('playground.thinking_title', { defaultValue: 'Thinking' })}
               </span>
             </button>
 
             <button
               type="button"
-              className="pg-input-action"
-              style={styles.attachBtn}
+              className={styles.iconButton}
               onMouseDown={event => event.preventDefault()}
               onClick={triggerImagePicker}
               disabled={isActiveConversationStreaming}
               title={t('playground.attach_images')}
+              aria-label={t('playground.attach_images')}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <circle cx="8.5" cy="8.5" r="1.5" />
                 <path d="M21 15l-5-5L5 21" />
               </svg>
-              <span className="pg-input-action-label">
+              <span className={styles.iconButtonLabel}>
                 {t('playground.image')}
               </span>
             </button>
@@ -175,37 +250,30 @@ export function InputArea() {
             {isActiveConversationStreaming ? (
               <button
                 type="button"
-                className="pg-send-action pg-stop-action"
-                style={styles.stopBtn}
+                className={styles.stopButton}
                 onMouseDown={event => event.preventDefault()}
                 onClick={stopStreaming}
                 title={t('playground.stop')}
                 aria-label={t('playground.stop')}
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
                   <rect x="2" y="2" width="8" height="8" rx="1" />
                 </svg>
-                <span className="pg-stop-label">{t('playground.stop')}</span>
               </button>
             ) : (
               <button
                 type="button"
-                className="pg-send-action"
-                style={{
-                  ...styles.sendBtn,
-                  opacity: canSendMessage ? 1 : 0.4,
-                }}
+                className={styles.sendButton}
                 onMouseDown={event => event.preventDefault()}
                 onClick={sendMessage}
                 disabled={!canSendMessage}
                 title={selectedPlatform && selectedModelID ? undefined : t('playground.select_model_first')}
                 aria-label={t('playground.send')}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M22 2L11 13" />
                   <path d="M22 2l-7 20-4-9-9-4 20-7z" />
                 </svg>
-                <span className="pg-send-label">{t('playground.send')}</span>
               </button>
             )}
           </div>

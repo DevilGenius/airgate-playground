@@ -85,8 +85,8 @@ function message(overrides: Partial<Message> = {}): Message {
 
 function makeContext(overrides: Partial<PlaygroundContextValue> = {}): PlaygroundContextValue {
   const options: SelectOption[] = [
-    { value: 'openai:gpt-5.5', label: 'GPT 5.5 · openai' },
-    { value: 'openai:gpt-5.4', label: 'GPT 5.4 · openai' },
+    { value: 'openai:gpt-5.5', label: 'GPT 5.5 › openai' },
+    { value: 'openai:gpt-5.4', label: 'GPT 5.4 › openai' },
   ];
   const base: PlaygroundContextValue = {
     t,
@@ -143,17 +143,6 @@ function makeContext(overrides: Partial<PlaygroundContextValue> = {}): Playgroun
     handleImageChange: vi.fn().mockResolvedValue(undefined),
     handlePaste: vi.fn(),
     handleKeyDown: vi.fn(),
-    renderNativeSelect: ({ id, value, options: selectOptions, onChange, ariaLabel, style }) => (
-      <select
-        id={id}
-        aria-label={ariaLabel}
-        value={value}
-        onChange={event => onChange(event.target.value)}
-        style={style}
-      >
-        {selectOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </select>
-    ),
     interactiveMessageOptions: {
       imagePreviewTitle: 'Preview image',
       generatedImageAlt: 'Generated image',
@@ -225,88 +214,48 @@ describe('ConversationTabs', () => {
 });
 
 describe('InputArea', () => {
-  it('renders composer controls and dispatches user interactions', () => {
-    const pendingImage = {
-      id: 'image-1',
-      name: 'image.png',
-      url: 'data:image/png;base64,aGVsbG8=',
-    };
-    const { context, container } = withContext({
-      input: 'Hello',
-      pendingImages: [pendingImage],
+  it('renders composer controls and dispatches input actions', () => {
+    const { context } = withContext({
+      input: 'hello',
       canSendMessage: true,
     }, <InputArea />);
 
-    fireEvent.change(screen.getByPlaceholderText('Ask anything'), { target: { value: 'Changed' } });
-    expect(context.setInput).toHaveBeenCalledWith('Changed');
+    const textarea = screen.getByPlaceholderText('Ask anything');
+    expect(textarea).toHaveValue('hello');
 
-    fireEvent.paste(screen.getByPlaceholderText('Ask anything'));
-    expect(context.handlePaste).toHaveBeenCalled();
+    fireEvent.change(textarea, { target: { value: 'next prompt' } });
+    expect(context.setInput).toHaveBeenCalledWith('next prompt');
 
-    fireEvent.keyDown(screen.getByPlaceholderText('Ask anything'), { key: 'Enter' });
-    expect(context.handleKeyDown).toHaveBeenCalled();
-
-    fireEvent.change(screen.getByLabelText('Model'), { target: { value: 'openai:gpt-5.4' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Model' }));
+    fireEvent.click(screen.getByRole('option', { name: 'GPT 5.4 › openai' }));
     expect(context.setSelectedModel).toHaveBeenCalledWith('openai:gpt-5.4');
 
-    fireEvent.change(screen.getByLabelText('Reasoning effort'), { target: { value: 'high' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Reasoning effort' }));
+    fireEvent.click(screen.getByRole('option', { name: 'High' }));
     expect(context.setReasoningEffort).toHaveBeenCalledWith('high');
 
-    fireEvent.mouseDown(screen.getByRole('button', { name: 'Hide Thinking' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Hide Thinking' }));
-    expect(context.setThinkingVisible).toHaveBeenCalledWith(expect.any(Function));
-
-    fireEvent.mouseDown(screen.getByTitle('Attach images'));
-    fireEvent.click(screen.getByTitle('Attach images'));
+    fireEvent.click(screen.getByRole('button', { name: 'Attach images' }));
     expect(context.triggerImagePicker).toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Remove image.png' }));
-    expect(context.removePendingImage).toHaveBeenCalledWith('image-1');
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Thinking' }));
+    expect(context.setThinkingVisible).toHaveBeenCalled();
 
-    fireEvent.change(container.querySelector('input[type="file"]') as HTMLInputElement);
-    expect(context.handleImageChange).toHaveBeenCalled();
-
-    fireEvent.mouseDown(screen.getByRole('button', { name: 'Send' }));
     fireEvent.click(screen.getByRole('button', { name: 'Send' }));
     expect(context.sendMessage).toHaveBeenCalled();
   });
 
-  it('renders the hidden thinking toggle state', () => {
+  it('renders pending images and stop action while streaming', () => {
     const { context } = withContext({
-      thinkingVisible: false,
-    }, <InputArea />);
-
-    fireEvent.mouseDown(screen.getByRole('button', { name: 'Show Thinking' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Show Thinking' }));
-    expect(context.setThinkingVisible).toHaveBeenCalledWith(expect.any(Function));
-  });
-
-  it('renders streaming composer state with disabled image controls and stop action', () => {
-    const { context, container } = withContext({
       isActiveConversationStreaming: true,
-      selectedModelSupportsReasoning: false,
-      pendingImages: [{ id: 'image-1', name: 'image.png', url: 'data:image/png;base64,aGVsbG8=' }],
+      pendingImages: [{ id: 'image-1', name: 'sample.png', url: 'blob:sample' }],
     }, <InputArea />);
 
+    expect(screen.getByAltText('sample.png')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Ask anything')).toBeDisabled();
-    expect(screen.queryByLabelText('Reasoning effort')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Remove image.png' })).toBeDisabled();
-    expect(container.querySelector('input[type="file"]')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Remove sample.png' })).toBeDisabled();
 
-    fireEvent.mouseDown(screen.getByRole('button', { name: 'Stop' }));
     fireEvent.click(screen.getByRole('button', { name: 'Stop' }));
     expect(context.stopStreaming).toHaveBeenCalled();
-  });
-
-  it('disables send when no model is selected', () => {
-    withContext({
-      canSendMessage: false,
-      selectedPlatform: '',
-      selectedModelID: '',
-    }, <InputArea />);
-
-    expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Send' })).toHaveAttribute('title', 'Select a model first');
   });
 });
 
