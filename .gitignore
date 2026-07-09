@@ -11,6 +11,8 @@ tmp/
 
 # Frontend
 /web/node_modules/
+/web/.pnpm-store/
+/web/.pnpm-store-tmp/
 /web/dist/
 
 # Embedded frontend assets
