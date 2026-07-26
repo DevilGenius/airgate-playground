@@ -145,7 +145,7 @@ describe('chatCompletionsStream', () => {
         Authorization: 'Bearer token',
         'Content-Type': 'application/json',
         Accept: 'text/event-stream',
-        'X-Airgate-Platform': 'openai',
+        'X-Playground-Platform': 'openai',
       },
       body: JSON.stringify({
         model: 'requested',

@@ -19,8 +19,9 @@ import (
 )
 
 const (
-	headerEntry  = "X-Airgate-Entry"
-	headerUserID = "X-Airgate-User-Id"
+	headerEntry    = "X-Airgate-Entry"
+	headerUserID   = "X-Airgate-User-Id"
+	headerPlatform = "X-Playground-Platform"
 )
 
 func (p *Plugin) RegisterRoutes(r sdk.RouteRegistrar) {
@@ -229,7 +230,7 @@ func (p *Plugin) handleChatCompletions(w http.ResponseWriter, r *http.Request) {
 		sdk.LogFieldUserID, parseUserID(r),
 	)
 
-	platform := strings.TrimSpace(r.Header.Get("X-Airgate-Platform"))
+	platform := strings.TrimSpace(r.Header.Get(headerPlatform))
 	if platform == "" {
 		writeOpenAIError(w, http.StatusBadRequest, "invalid_request_error", "invalid_request", "platform required")
 		return

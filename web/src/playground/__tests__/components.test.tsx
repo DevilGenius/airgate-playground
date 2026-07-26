@@ -244,6 +244,19 @@ describe('InputArea', () => {
     expect(context.sendMessage).toHaveBeenCalled();
   });
 
+  it('offers GPT-5.6 reasoning efforts', () => {
+    const { context } = withContext({
+      selectedModel: 'openai:gpt-5.6-sol',
+      selectedModelID: 'gpt-5.6-sol',
+    }, <InputArea />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reasoning effort' }));
+    expect(screen.getByRole('option', { name: 'None' })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: 'Minimal' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('option', { name: 'Max' }));
+    expect(context.setReasoningEffort).toHaveBeenCalledWith('max');
+  });
+
   it('renders pending images and stop action while streaming', () => {
     const { context } = withContext({
       isActiveConversationStreaming: true,

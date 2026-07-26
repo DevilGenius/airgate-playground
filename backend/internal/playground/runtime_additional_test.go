@@ -693,7 +693,7 @@ func playgroundRequest(method, target string, body []byte, userID int, platform 
 		req.Header.Set(headerUserID, fmt.Sprint(userID))
 	}
 	if platform != "" {
-		req.Header.Set("X-Airgate-Platform", platform)
+		req.Header.Set(headerPlatform, platform)
 	}
 	return req
 }

@@ -1,5 +1,6 @@
 const BASE = '/api/v1/ext-user/airgate-playground';
 const AUTH_TOKEN_STORAGE_KEY = 'ag:web:auth:token';
+const PLATFORM_HEADER = 'X-Playground-Platform';
 
 function readBrowserStorage(kind: 'localStorage' | 'sessionStorage', key: string): string {
   if (typeof window === 'undefined') return '';
@@ -48,7 +49,7 @@ async function request<T>(method: string, path: string, body?: unknown, base = B
 
 // ── Types ──
 
-export type ReasoningEffort = 'minimal' | 'low' | 'medium' | 'high' | 'xhigh';
+export type ReasoningEffort = 'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 
 export interface Conversation {
   id: number;
@@ -159,7 +160,7 @@ export async function chatCompletionsStream(
       ...authHeaders(),
       'Content-Type': 'application/json',
       'Accept': 'text/event-stream',
-      'X-Airgate-Platform': platform,
+      [PLATFORM_HEADER]: platform,
     },
     body: JSON.stringify(requestBody),
     signal,

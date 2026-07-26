@@ -11,6 +11,15 @@ const REASONING_OPTIONS: SelectOption[] = [
   { value: 'xhigh', label: 'XHigh' },
 ];
 
+const GPT_5_6_REASONING_OPTIONS: SelectOption[] = [
+  { value: 'none', label: 'None' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+  { value: 'xhigh', label: 'XHigh' },
+  { value: 'max', label: 'Max' },
+];
+
 function ComposerSelect({
   value,
   options,
@@ -115,6 +124,15 @@ export function InputArea() {
     selectedPlatform,
     selectedModelID,
   } = usePlayground();
+  const reasoningOptions = selectedModelID.startsWith('gpt-5.6-')
+    ? GPT_5_6_REASONING_OPTIONS
+    : REASONING_OPTIONS;
+
+  useEffect(() => {
+    if (!selectedModelSupportsReasoning) return;
+    if (reasoningOptions.some(option => option.value === reasoningEffort)) return;
+    setReasoningEffort('medium');
+  }, [reasoningEffort, reasoningOptions, selectedModelSupportsReasoning, setReasoningEffort]);
 
   return (
     <div className={styles.composerDock}>
@@ -177,7 +195,7 @@ export function InputArea() {
                 <ComposerSelect
                   className={styles.reasoningSelect}
                   value={reasoningEffort}
-                  options={REASONING_OPTIONS}
+                  options={reasoningOptions}
                   onChange={value => setReasoningEffort(value as ReasoningEffort)}
                   ariaLabel="Reasoning effort"
                 />
