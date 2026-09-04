@@ -86,7 +86,7 @@ function message(overrides: Partial<Message> = {}): Message {
 function makeContext(overrides: Partial<PlaygroundContextValue> = {}): PlaygroundContextValue {
   const options: SelectOption[] = [
     { value: 'openai:gpt-5.5', label: 'GPT 5.5 › openai' },
-    { value: 'openai:gpt-5.4', label: 'GPT 5.4 › openai' },
+    { value: 'openai:gpt-5.6-sol', label: 'GPT 5.6 Sol › openai' },
   ];
   const base: PlaygroundContextValue = {
     t,
@@ -227,8 +227,8 @@ describe('InputArea', () => {
     expect(context.setInput).toHaveBeenCalledWith('next prompt');
 
     fireEvent.click(screen.getByRole('button', { name: 'Model' }));
-    fireEvent.click(screen.getByRole('option', { name: 'GPT 5.4 › openai' }));
-    expect(context.setSelectedModel).toHaveBeenCalledWith('openai:gpt-5.4');
+    fireEvent.click(screen.getByRole('option', { name: 'GPT 5.6 Sol › openai' }));
+    expect(context.setSelectedModel).toHaveBeenCalledWith('openai:gpt-5.6-sol');
 
     fireEvent.click(screen.getByRole('button', { name: 'Reasoning effort' }));
     fireEvent.click(screen.getByRole('option', { name: 'High' }));

@@ -232,7 +232,8 @@ describe('PlaygroundContext', () => {
 
     await waitFor(() => expect(screen.getByTestId('active')).toHaveTextContent('1'));
     await waitFor(() => expect(screen.getByTestId('messages')).toHaveTextContent('Stored message'));
-    expect(screen.getByTestId('selected')).toHaveTextContent('openai:gpt-5.4|gpt-5.4|openai|true');
+    expect(screen.getByTestId('selected')).toHaveTextContent('openai:gpt-5.5|gpt-5.5|openai|true');
+    expect(window.localStorage.getItem('airgate.playground.selectedModel')).toBe('openai:gpt-5.5');
     expect(screen.getByTestId('thinking-visible')).toHaveTextContent('false');
     expect(screen.getByTestId('user')).toHaveTextContent('12.5');
     expect(balanceListener).toHaveBeenCalledWith(expect.objectContaining({ detail: { balance: 12.5 } }));

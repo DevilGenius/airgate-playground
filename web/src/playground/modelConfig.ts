@@ -42,16 +42,6 @@ export const CHAT_MODEL_REGISTRY: ModelInfo[] = [
     capabilities: ['chat', 'reasoning'],
   },
   {
-    id: 'gpt-5.4',
-    name: 'GPT 5.4',
-    platform: 'openai',
-    input_price: 2.5,
-    output_price: 15,
-    context_window: 272000,
-    max_output_tokens: 128000,
-    capabilities: ['chat', 'reasoning'],
-  },
-  {
     id: 'gpt-5.4-mini',
     name: 'GPT 5.4 Mini',
     platform: 'openai',

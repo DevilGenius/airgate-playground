@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { CHAT_MODEL_REGISTRY } from '../modelConfig';
 
 describe('playground model config', () => {
+  it('removes GPT-5.4 while retaining GPT-5.4 Mini', () => {
+    expect(CHAT_MODEL_REGISTRY.some(model => model.id === 'gpt-5.4')).toBe(false);
+    expect(CHAT_MODEL_REGISTRY.some(model => model.id === 'gpt-5.4-mini')).toBe(true);
+  });
+
   it.each([
     ['gpt-5.6-sol', 'GPT 5.6 Sol', 5, 30],
     ['gpt-5.6-terra', 'GPT 5.6 Terra', 2.5, 15],
