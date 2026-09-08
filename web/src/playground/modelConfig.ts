@@ -2,6 +2,16 @@ import type { ModelInfo } from './types';
 
 export const CHAT_MODEL_REGISTRY: ModelInfo[] = [
   {
+    id: 'gpt-6-astra',
+    name: 'GPT 6 Astra',
+    platform: 'openai',
+    input_price: 10,
+    output_price: 50,
+    context_window: 1050000,
+    max_output_tokens: 128000,
+    capabilities: ['chat', 'reasoning'],
+  },
+  {
     id: 'gpt-5.6-sol',
     name: 'GPT 5.6 Sol',
     platform: 'openai',
@@ -38,16 +48,6 @@ export const CHAT_MODEL_REGISTRY: ModelInfo[] = [
     input_price: 5,
     output_price: 30,
     context_window: 400000,
-    max_output_tokens: 128000,
-    capabilities: ['chat', 'reasoning'],
-  },
-  {
-    id: 'gpt-5.4-mini',
-    name: 'GPT 5.4 Mini',
-    platform: 'openai',
-    input_price: 0.75,
-    output_price: 4.5,
-    context_window: 128000,
     max_output_tokens: 128000,
     capabilities: ['chat', 'reasoning'],
   },
