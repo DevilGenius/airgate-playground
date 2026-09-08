@@ -13,6 +13,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -628,38 +629,18 @@ func (r *playgroundRouteRecorder) Group(prefix string) sdk.RouteRegistrar {
 }
 
 func TestAssetsLoadingAdditional(t *testing.T) {
-	plugin := &Plugin{}
+	before := (&Plugin{}).GetWebAssets()
 	root := t.TempDir()
-	if got := loadAssetsFromDir(filepath.Join(root, "missing")); got != nil {
-		t.Fatalf("missing assets = %#v", got)
-	}
-	if err := os.MkdirAll(filepath.Join(root, "assets"), 0o700); err != nil {
+	if err := os.MkdirAll(filepath.Join(root, "web", "dist"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(root, "index.html"), []byte("html"), 0o600); err != nil {
+	if err := os.WriteFile(filepath.Join(root, "web", "dist", "index.js"), []byte("wrong project"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(root, "assets", "app.js"), []byte("js"), 0o600); err != nil {
-		t.Fatal(err)
-	}
-	loaded := loadAssetsFromDir(root)
-	if string(loaded["index.html"]) != "html" || string(loaded["assets/app.js"]) != "js" {
-		t.Fatalf("loaded assets = %#v", loaded)
-	}
-
-	devRoot := t.TempDir()
-	if err := os.MkdirAll(filepath.Join(devRoot, "web", "dist"), 0o700); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(devRoot, "web", "dist", "index.html"), []byte("dev"), 0o600); err != nil {
-		t.Fatal(err)
-	}
-	t.Chdir(devRoot)
-	if assets := loadDevAssets(); string(assets["index.html"]) != "dev" {
-		t.Fatalf("dev assets = %#v", assets)
-	}
-	if assets := plugin.GetWebAssets(); string(assets["index.html"]) != "dev" {
-		t.Fatalf("GetWebAssets = %#v", assets)
+	t.Chdir(root)
+	after := (&Plugin{}).GetWebAssets()
+	if !reflect.DeepEqual(before, after) {
+		t.Fatal("working directory changed immutable plugin assets")
 	}
 }
 
