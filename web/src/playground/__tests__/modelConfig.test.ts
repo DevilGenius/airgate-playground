@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { CHAT_MODEL_REGISTRY } from '../modelConfig';
 
 describe('playground model config', () => {
-  it('removes GPT-5.4 and GPT-5.4 Mini', () => {
+  it('removes GPT-5.4, GPT-5.4 Mini and gpt-5.3-codex-spark', () => {
     expect(CHAT_MODEL_REGISTRY.some(model => model.id === 'gpt-5.4')).toBe(false);
     expect(CHAT_MODEL_REGISTRY.some(model => model.id === 'gpt-5.4-mini')).toBe(false);
+    expect(CHAT_MODEL_REGISTRY.some(model => model.id === 'gpt-5.3-codex-spark')).toBe(false);
   });
 
   it.each([

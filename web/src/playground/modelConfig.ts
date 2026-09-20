@@ -51,14 +51,4 @@ export const CHAT_MODEL_REGISTRY: ModelInfo[] = [
     max_output_tokens: 128000,
     capabilities: ['chat', 'reasoning'],
   },
-  {
-    id: 'gpt-5.3-codex-spark',
-    name: 'GPT 5.3 Codex Spark',
-    platform: 'openai',
-    input_price: 1.75,
-    output_price: 14,
-    context_window: 128000,
-    max_output_tokens: 128000,
-    capabilities: ['chat', 'reasoning'],
-  },
 ];
