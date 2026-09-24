@@ -122,6 +122,9 @@ func hostForwardStream(ctx context.Context, host sdk.Host, req hostForwardReques
 		if err := onChunk(chunk); err != nil {
 			return err
 		}
+		if chunk.Done {
+			return nil
+		}
 	}
 }
 

@@ -316,7 +316,7 @@ func (p *Plugin) handleChatCompletions(w http.ResponseWriter, r *http.Request) {
 		Body:    body,
 		Stream:  true,
 	}, func(chunk hostForwardChunk) error {
-		if chunk.Done {
+		if chunk.Done && len(chunk.Data) == 0 {
 			return nil
 		}
 		if !committed {
