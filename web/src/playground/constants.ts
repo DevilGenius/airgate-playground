@@ -1,7 +1,7 @@
 export const MOBILE_BREAKPOINT = 960;
 export const DRAFT_CONVERSATION_ID = -1;
 
-export const DEFAULT_MODEL_ID = 'gpt-5.5';
+export const DEFAULT_MODEL_ID = 'gpt-5.6-sol';
 export const ACTIVE_CONVERSATION_STORAGE_KEY = 'airgate.playground.activeConversationId';
 export const SELECTED_MODEL_STORAGE_KEY = 'airgate.playground.selectedModel';
 export const THINKING_VISIBLE_STORAGE_KEY = 'airgate.playground.thinkingVisible';
