@@ -19,6 +19,7 @@ tmp/
 /backend/internal/playground/webdist/
 
 # Local tooling
+.tools/
 .claude/settings.local.json
 go.work
 go.work.sum
