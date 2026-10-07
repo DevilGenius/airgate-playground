@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
+
 	sdk "github.com/DevilGenius/airgate-sdk/sdkgo"
 )
 

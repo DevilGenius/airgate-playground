@@ -17,9 +17,10 @@ import (
 	"strings"
 	"testing"
 
-	sdk "github.com/DevilGenius/airgate-sdk/sdkgo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	sdk "github.com/DevilGenius/airgate-sdk/sdkgo"
 )
 
 type playgroundFakeHost struct {
