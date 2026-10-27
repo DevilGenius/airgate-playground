@@ -183,8 +183,8 @@ describe('playground utils', () => {
     expect(normalizeModelName('GPT-5_5 Mini')).toBe('gpt55mini');
     expect(defaultModelOptionValue([
       model({ id: 'other', name: 'Other' }),
-      model({ id: 'gpt-5.5', name: 'Preferred' }),
-    ])).toBe('openai:gpt-5.5');
+      model({ id: 'gpt-5.6-sol', name: 'Preferred' }),
+    ])).toBe('openai:gpt-5.6-sol');
     expect(defaultModelOptionValue([model({ id: 'first', name: 'First' })])).toBe('openai:first');
     expect(defaultModelOptionValue([])).toBe('');
   });

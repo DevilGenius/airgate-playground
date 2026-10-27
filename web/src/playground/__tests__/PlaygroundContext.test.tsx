@@ -232,8 +232,8 @@ describe('PlaygroundContext', () => {
 
     await waitFor(() => expect(screen.getByTestId('active')).toHaveTextContent('1'));
     await waitFor(() => expect(screen.getByTestId('messages')).toHaveTextContent('Stored message'));
-    expect(screen.getByTestId('selected')).toHaveTextContent('openai:gpt-5.5|gpt-5.5|openai|true');
-    expect(window.localStorage.getItem('airgate.playground.selectedModel')).toBe('openai:gpt-5.5');
+    expect(screen.getByTestId('selected')).toHaveTextContent('openai:gpt-5.6-sol|gpt-5.6-sol|openai|true');
+    expect(window.localStorage.getItem('airgate.playground.selectedModel')).toBe('openai:gpt-5.6-sol');
     expect(screen.getByTestId('thinking-visible')).toHaveTextContent('false');
     expect(screen.getByTestId('user')).toHaveTextContent('12.5');
     expect(balanceListener).toHaveBeenCalledWith(expect.objectContaining({ detail: { balance: 12.5 } }));
@@ -302,13 +302,13 @@ describe('PlaygroundContext', () => {
       title: '',
       group_id: 0,
       platform: 'openai',
-      model: 'gpt-5.5',
+      model: 'gpt-5.6-sol',
     }));
     await waitFor(() => expect(screen.getByTestId('active')).toHaveTextContent('10'));
     expect(mocks.chatCompletionsStream).toHaveBeenCalledWith(
       'openai',
       expect.objectContaining({
-        model: 'gpt-5.5',
+        model: 'gpt-5.6-sol',
         reasoning_effort: 'medium',
         stream: true,
       }),
@@ -360,7 +360,7 @@ describe('PlaygroundContext', () => {
     fireEvent.click(screen.getByText('send'));
 
     await waitFor(() => expect(screen.getByTestId('error')).toHaveTextContent('stream broke'));
-    expect(screen.getByTestId('retry')).toHaveTextContent('1:gpt-5.5');
+    expect(screen.getByTestId('retry')).toHaveTextContent('1:gpt-5.6-sol');
 
     fireEvent.click(screen.getByText('retry-last'));
     await waitFor(() => expect(mocks.chatCompletionsStream).toHaveBeenCalledTimes(2));
@@ -378,7 +378,7 @@ describe('PlaygroundContext', () => {
     fireEvent.click(screen.getByText('send'));
 
     await waitFor(() => expect(screen.getByTestId('error')).toHaveTextContent('thrown stream'));
-    expect(screen.getByTestId('retry')).toHaveTextContent('1:gpt-5.5');
+    expect(screen.getByTestId('retry')).toHaveTextContent('1:gpt-5.6-sol');
   });
 
   it('marks empty stream completions as failures and can stop an active stream', async () => {
